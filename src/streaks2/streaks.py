@@ -34,6 +34,7 @@ def find_streaks(lst):
         find_streaks([3, 2, 1]) -> [[3], [2], [1]]
         find_streaks([2, 1, 3]) -> [[2], [1, 3]]
     """
+
     if not lst:
         return []
 
@@ -56,13 +57,15 @@ def find_kv_streaks(lst):
     Find the lengths of all streaks in a list of integers and return them as a dictionary.
 
     Args:
-        lst (list): A list of distinct integers.
+        lst (list): A list or ndarray of distinct integers.
 
     Returns:
         dict: A dictionary where the keys are the starting integers of each streak and the values are the lengths of those streaks.
     """
     kv_streaks = {}
-    if not lst.any():
+    if (type(lst) is np.ndarray) and (not lst.any()):
+        return kv_streaks
+    elif (type(lst) is list) and (not lst):
         return kv_streaks
 
     streak_start = lst[0]
@@ -90,8 +93,10 @@ def first_kv_streak(lst):
     Returns:
         a tuple of the first key-value pair of the streaks in lst.
     """
-    # if not lst:
-    #     return None
+    if (type(lst) is np.ndarray) and (not lst.any()):
+        return ()
+    elif (type(lst) is list) and (not lst):
+        return ()
 
     streak_start = lst[0]
     streak_length = 1
