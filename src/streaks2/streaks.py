@@ -1,9 +1,8 @@
-from itertools import permutations
-import math
 import numpy as np
 import sympy
 
 GAMMA = float(sympy.S.EulerGamma)
+
 
 # generate a random permutation of range(n)
 def random_permutation(n):
@@ -22,7 +21,7 @@ def random_permutation(n):
 def find_streaks(lst):
     """
     Decompose lst into streaks. A streak is a sequence of integers, all of which are are larger than the initial integer of the streak.
-    
+
     Args:
         lst (list): A list of distinct integers.
 
@@ -51,6 +50,7 @@ def find_streaks(lst):
     streaks.append(current_streak)
     return streaks
 
+
 def find_kv_streaks(lst):
     """
     Find the lengths of all streaks in a list of integers and return them as a dictionary.
@@ -72,10 +72,34 @@ def find_kv_streaks(lst):
         if lst[i] > streak_start:
             streak_length += 1
         else:
-            kv_streaks[streak_start] = streak_length
+            kv_streaks[int(streak_start)] = streak_length
             streak_start = lst[i]
             streak_length = 1
 
     kv_streaks[streak_start] = streak_length
     return kv_streaks
 
+
+def first_kv_streak(lst):
+    """
+    Return the first key-value pair of the streaks in lst.
+
+    Args:
+        lst (list): A list of distinct integers.
+
+    Returns:
+        a tuple of the first key-value pair of the streaks in lst.
+    """
+    # if not lst:
+    #     return None
+
+    streak_start = lst[0]
+    streak_length = 1
+
+    for i in range(1, len(lst)):
+        if lst[i] > streak_start:
+            streak_length += 1
+        else:
+            break
+
+    return (int(streak_start), streak_length)
