@@ -51,7 +51,7 @@ def find_streaks(lst):
     streaks.append(current_streak)
     return streaks
 
-def kv_streaks(lst):
+def find_kv_streaks(lst):
     """
     Find the lengths of all streaks in a list of integers and return them as a dictionary.
 
@@ -79,32 +79,3 @@ def kv_streaks(lst):
     kv_streaks[streak_start] = streak_length
     return kv_streaks
 
-"""
-n = 10
-tot_len = 0
-
-for perm in permutations(range(1, n+1)):
-    s = find_streaks(perm)
-    #print(s)
-    l = len(s)
-    tot_len += l
-print(tot_len/math.factorial(n))
-print(math.log(n) + GAMMA)
-
-print("---------------------------------")
-
-# tot_len = 0
-# for perm in permutations(range(1, n+1)):
-#     kvs = kv_streaks(perm)
-#     #print(s)
-#     l = len(kvs)
-#     tot_len += l
-# print(tot_len/math.factorial(n))
-# print(math.log(n) + GAMMA)
-
-# print("---------------------------------")
-
-lst = random_permutation(1_000_000)
-# #print(find_streaks(lst))
-print(len(kv_streaks(lst)))
-"""

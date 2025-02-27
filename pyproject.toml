@@ -1,5 +1,5 @@
 [project]
-name = "expt"
+name = "streaks2"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-expt = "expt:main"
+main = "streaks2:main"
 
 [build-system]
 requires = ["hatchling"]
