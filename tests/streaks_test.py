@@ -6,6 +6,7 @@ from streaks2.streaks import (
     find_streaks,
     first_kv_streak,
     random_permutation,
+    streak_count_by_start,
 )
 
 
@@ -41,6 +42,14 @@ def test_first_kv_streak():
     assert first_kv_streak(np.array([3, 2, 1])) == (3, 1)
     assert first_kv_streak(np.array([2, 1, 3])) == (2, 1)
     assert first_kv_streak(np.array([1, 3, 2, 4])) == (1, 4)
+
+
+def test_streak_inits():
+    assert streak_count_by_start(1) == {1: 1}
+    assert streak_count_by_start(2) == {1: 2, 2: 1}
+    assert streak_count_by_start(3) == {1: 6, 2: 3, 3: 2}
+    assert streak_count_by_start(4) == {1: 24, 2: 12, 3: 8, 4: 6}
+    assert streak_count_by_start(5) == {1: 120, 2: 60, 3: 40, 4: 30, 5: 24}
 
 
 if __name__ == "__main__":

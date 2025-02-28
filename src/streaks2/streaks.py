@@ -1,3 +1,6 @@
+from collections import Counter
+from itertools import permutations
+
 import numpy as np
 import sympy
 
@@ -108,3 +111,28 @@ def first_kv_streak(lst):
             break
 
     return (int(streak_start), streak_length)
+
+
+def streak_count_by_start(n):
+    """
+    Count how many streaks start with each integer, over all permutations.
+
+    Args:
+        n (int): The number of elements to permute.
+        The permutations will be of the integers from 1 to n.
+
+    Returns:
+        A dictionary counting the number of permutations
+        for which each integer starts a streak.
+
+    Examples:
+        streak_count_by_start(1) -> {1: 1}
+        streak_count_by_start(2) -> {1: 2, 2: 1}
+        streak_count_by_start(3) -> {1: 6, 2: 3, 3: 2}
+        streak_count_by_start(4) -> {1: 24, 2: 12, 3: 8, 4: 6}
+    """
+    starts = Counter()
+    for perm in permutations(range(1, n + 1)):
+        starts_in_perm = find_kv_streaks(perm).keys()
+        starts += Counter(starts_in_perm)
+    return dict(starts)
