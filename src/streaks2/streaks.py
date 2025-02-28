@@ -124,6 +124,8 @@ def streak_count_by_start(n):
     Returns:
         A dictionary counting the number of permutations
         for which each integer starts a streak.
+        This turns out to be {k: n!/k} for k in 1..n.
+
 
     Examples:
         streak_count_by_start(1) -> {1: 1}
@@ -136,3 +138,26 @@ def streak_count_by_start(n):
         starts_in_perm = find_kv_streaks(perm).keys()
         starts += Counter(starts_in_perm)
     return dict(starts)
+
+
+def total_streak_length_by_start(n):
+    """
+    Count the total length of streaks starting with each integer, over all permutations.
+
+    Returns:
+        A dictionary counting the total length of streaks starting with each integer.
+        This turns out to be {k: (n+1)!/(k+1)*k} for k in 1..n.
+
+
+    Examples:
+        total_streak_length_by_start(1) -> {1: 1}
+        total_streak_length_by_start(2) -> {1: 3, 2: 1}
+        total_streak_length_by_start(3) -> {1: 12, 2: 4, 3: 2}
+        total_streak_length_by_start(4) -> {1: 60, 2: 20, 3: 10, 4: 6}
+
+    """
+    lengths = Counter()
+    for perm in permutations(range(1, n + 1)):
+        streaks = find_kv_streaks(np.array(perm))
+        lengths += Counter(streaks)
+    return {k: v for k, v in lengths.items()}
