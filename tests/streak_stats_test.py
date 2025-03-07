@@ -2,7 +2,11 @@ import math
 
 from sympy.functions.combinatorial.numbers import stirling
 
-from streaks2.streak_stats import count_streaks, mean_kv_streaks
+from streaks2.streak_stats import (
+    count_streaks,
+    count_streaks_by_length,
+    mean_kv_streaks,
+)
 from streaks2.streaks import GAMMA
 
 
@@ -18,3 +22,17 @@ def test_mean_kv_streaks():
     mean_kv = mean_kv_streaks(n, trials)
     expected = math.log(n) + GAMMA
     assert math.isclose(mean_kv, expected, rel_tol=0.1)
+
+
+# write pytest unit tests of count_streaks_by_length(n)
+# in the dictionary the function returns,
+# for each key, k, the expected value is n!/k.
+# Write tests for n = range(1, 10)
+
+
+def test_count_streaks_by_length():
+    for n in range(1, 10):
+        streaks_by_length = count_streaks_by_length(n)
+        for k in streaks_by_length:
+            expected_value = math.factorial(n) / k
+            assert streaks_by_length[k] == expected_value
