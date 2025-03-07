@@ -36,3 +36,11 @@ def test_count_streaks_by_length():
         for k in streaks_by_length:
             expected_value = math.factorial(n) / k
             assert streaks_by_length[k] == expected_value
+
+
+def test_all_lines_in_permutation_block_same_length():
+    n = 5
+    n_fact = math.factorial(n)
+    streaks_by_length = count_streaks_by_length(n)
+    for k in streaks_by_length:
+        assert k * streaks_by_length[k] == n_fact
