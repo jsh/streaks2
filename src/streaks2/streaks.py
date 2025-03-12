@@ -16,6 +16,9 @@ class Streak:
             seq (list): A list of integers representing the streak.
                                  The first element should be the smallest.
         """
+        # assert that the seq[0] is the minimum element
+        if seq:
+            assert min(seq) == seq[0]
         self.streak = seq
 
     def __repr__(self):
@@ -34,6 +37,8 @@ class Streaks:
         Args:
             seq (list): An integer sequence to decompose into streaks.
         """
+        # assert that all elements in seq are distinct
+        assert len(seq) == len(set(seq))
         self.streaks = self._find_streaks(seq)
 
     def _find_streaks(self, seq):
@@ -47,7 +52,7 @@ class Streaks:
             list: A list of Streak objects.
         """
         if not seq:
-            return [Streak([])]
+            return []
 
         streaks = []
         current_streak = [seq[0]]
@@ -78,6 +83,7 @@ class KvStreaks:
         Args:
             seq (list): A list of integers to analyze for streaks.
         """
+        assert len(seq) == len(set(seq))
         self.kv_streaks = {}
         self._find_kv_streaks(seq)
 

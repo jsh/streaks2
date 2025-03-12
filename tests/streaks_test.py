@@ -1,65 +1,91 @@
-import numpy as np
 import pytest
 
-from streaks2.streaks import (
-    find_kv_streaks,
-    find_streaks,
-    first_kv_streak,
-    random_permutation,
-    streak_count_by_start,
-    total_streak_length_by_start,
-)
+from streaks2.streaks import KvStreaks, Streak, Streaks
 
 
-def test_random_permutation():
-    n = 10
-    perm = random_permutation(n)
-    assert len(perm) == n
-    assert sorted(perm) == list(range(n))
+def test_streak_initialization():
+    s = Streak([1, 2, 3])
+    assert s.streak == [1, 2, 3]
 
 
-def test_find_streaks():
-    assert find_streaks([]) == []
-    assert find_streaks([1]) == [[1]]
-    assert find_streaks([1, 2, 3]) == [[1, 2, 3]]
-    assert find_streaks([3, 2, 1]) == [[3], [2], [1]]
-    assert find_streaks([2, 1, 3]) == [[2], [1, 3]]
-    assert find_streaks([1, 3, 2, 4]) == [[1, 3, 2, 4]]
+def test_streak_repr():
+    s = Streak([1, 2, 3])
+    assert repr(s) == "Streak([1, 2, 3])"
 
 
-def test_kv_streaks():
-    assert find_kv_streaks(np.array([])) == {}
-    assert find_kv_streaks(np.array([1])) == {1: 1}
-    assert find_kv_streaks(np.array([1, 2, 3])) == {1: 3}
-    assert find_kv_streaks(np.array([3, 2, 1])) == {3: 1, 2: 1, 1: 1}
-    assert find_kv_streaks(np.array([2, 1, 3])) == {2: 1, 1: 2}
-    assert find_kv_streaks(np.array([1, 3, 2, 4])) == {1: 4}
+def test_streaks_initialization():
+    s = Streaks([1, 2, 3, 4, 5])
+    assert len(s.streaks) == 1
+    assert s.streaks[0].streak == [1, 2, 3, 4, 5]
 
 
-def test_first_kv_streak():
-    assert first_kv_streak(np.array([])) == ()
-    assert first_kv_streak(np.array([1])) == (1, 1)
-    assert first_kv_streak(np.array([1, 2, 3])) == (1, 3)
-    assert first_kv_streak(np.array([3, 2, 1])) == (3, 1)
-    assert first_kv_streak(np.array([2, 1, 3])) == (2, 1)
-    assert first_kv_streak(np.array([1, 3, 2, 4])) == (1, 4)
+def test_streaks_repr():
+    s = Streaks([1, 2, 3, 4, 5])
+    assert repr(s) == "Streaks([Streak([1, 2, 3, 4, 5])])"
 
 
-def test_streak_inits():
-    assert streak_count_by_start(1) == {1: 1}
-    assert streak_count_by_start(2) == {1: 2, 2: 1}
-    assert streak_count_by_start(3) == {1: 6, 2: 3, 3: 2}
-    assert streak_count_by_start(4) == {1: 24, 2: 12, 3: 8, 4: 6}
-    assert streak_count_by_start(5) == {1: 120, 2: 60, 3: 40, 4: 30, 5: 24}
+def test_kv_streaks_initialization():
+    kv = KvStreaks([1, 2, 3, 4, 5])
+    assert kv.kv_streaks == {1: 5}
 
 
-def test_total_streak_length_by_start():
-    assert total_streak_length_by_start(1) == {1: 1}
-    assert total_streak_length_by_start(2) == {1: 3, 2: 1}
-    assert total_streak_length_by_start(3) == {1: 12, 2: 4, 3: 2}
-    assert total_streak_length_by_start(4) == {1: 60, 2: 20, 3: 10, 4: 6}
-    assert total_streak_length_by_start(5) == {1: 360, 2: 120, 3: 60, 4: 36, 5: 24}
+def test_kv_streaks_repr():
+    kv = KvStreaks([1, 2, 3, 4, 5])
+    assert repr(kv) == "KvStreaks({1: 5})"
 
 
-if __name__ == "__main__":
-    pytest.main()
+def test_empty_streak():
+    s = Streak([])
+    assert s.streak == []
+
+
+def test_empty_streaks():
+    s = Streaks([])
+    assert s.streaks == []
+
+
+def test_empty_kv_streaks():
+    kv = KvStreaks([])
+    assert kv.kv_streaks == {}
+
+
+def test_streaks_with_non_consecutive_numbers():
+    s = Streaks([5, 1, 3, 2, 4])
+    assert len(s.streaks) == 2
+    assert s.streaks[0].streak == [5]
+    assert s.streaks[1].streak == [1, 3, 2, 4]
+
+
+def test_kv_streaks_with_non_consecutive_numbers():
+    kv = KvStreaks([5, 1, 3, 2, 4])
+    assert kv.kv_streaks == {5: 1, 1: 4}
+
+
+def test_streak_initialization_with_non_minimum_first_element():
+    with pytest.raises(AssertionError):
+        Streak([2, 1, 3])
+
+
+def test_streaks_initialization_with_duplicates():
+    with pytest.raises(AssertionError):
+        Streaks([1, 2, 2, 3, 4])
+
+
+def test_kv_streaks_initialization_with_duplicates():
+    with pytest.raises(AssertionError):
+        KvStreaks([1, 2, 2, 3, 4])
+
+
+def test_streaks_with_decreasing_numbers():
+    s = Streaks([5, 4, 3, 2, 1])
+    assert len(s.streaks) == 5
+    assert s.streaks[0].streak == [5]
+    assert s.streaks[1].streak == [4]
+    assert s.streaks[2].streak == [3]
+    assert s.streaks[3].streak == [2]
+    assert s.streaks[4].streak == [1]
+
+
+def test_kv_streaks_with_decreasing_numbers():
+    kv = KvStreaks([5, 4, 3, 2, 1])
+    assert kv.kv_streaks == {5: 1, 4: 1, 3: 1, 2: 1, 1: 1}
