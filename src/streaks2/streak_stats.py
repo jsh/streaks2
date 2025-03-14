@@ -1,33 +1,53 @@
 from collections import Counter
 from itertools import permutations
 
-import streaks2.streaks as streaks
+import streaks2.streaks as sts
 
 
-def count_streaks(n):
-    streak_counts = Counter()
+# generate a random permutation of range(n)
+def all_kv_streaks(n):
     for perm in permutations(range(1, n + 1)):
-        streaks_list = streaks.find_streaks(perm)
-        streak_counts[len(streaks_list)] += 1
+        kv_streaks = sts.KvStreaks(perm)
+        yield kv_streaks.kv_streaks
+
+
+def all_streaks(n):
+    for perm in permutations(range(1, n + 1)):
+        streaks = sts.Streaks(perm)
+        yield streaks.streaks
+
+
+# count len(streaks) across all permutations of range(1, n+1)
+def streak_count(n):
+    streak_counts = Counter()
+    for streaks in all_streaks(n):
+        streak_counts[len(streaks)] += 1
     return dict(sorted(streak_counts.items()))
 
 
-def mean_kv_streaks(n, trials=1):
-    kv_streaks_count = []
-    for _ in range(trials):
-        kv_streaks = streaks.find_kv_streaks(streaks.random_permutation(n))
-        kv_streaks_count.append(len(kv_streaks))
-    return sum(kv_streaks_count) / trials
+def kv_streak_count(n):
+    kv_streak_counts = Counter()
+    for kv_streaks in all_kv_streaks(n):
+        kv_streak_counts[len(kv_streaks)] += 1
+    return dict(sorted(kv_streak_counts.items()))
 
 
-# count all streaks of length l in all permutations of range(1, n+1)
-# return a dictionary with the counts of each length
-# count_streaks(3) -> {1: 6, 2: 3, 3: 1}
-# count_streaks(4) -> {1: 24, 2: 12, 3: 6, 4: 1}
-def count_streaks_by_length(n):
-    streak_counts = Counter()
-    for perm in permutations(range(1, n + 1)):
-        streaks_list = streaks.find_streaks(perm)
-        for streak in streaks_list:
-            streak_counts[len(streak)] += 1
-    return dict(sorted(streak_counts.items()))
+# for i in range(9, 12):
+#     start_time = time.perf_counter()
+#     print(f"{streak_count(i)=}")
+#     end_time = time.perf_counter()
+#     elapsed_time = end_time - start_time
+#     print(f"Elapsed time: {elapsed_time:.6f} seconds")
+#     start_time = time.perf_counter()
+#     print(f"{kv_streak_count(i)=}")
+#     end_time = time.perf_counter()
+#     elapsed_time = end_time - start_time
+#     print(f"Elapsed time: {elapsed_time:.6f} seconds")
+
+
+# start_time = time.perf_counter()
+# kv_streaks = sts.KvStreaks(range(1, 1000001))
+# print(f"{len(keys(kv_streaks))=}")
+# end_time = time.perf_counter()
+# elapsed_time = end_time - start_time
+# print(f"Elapsed time: {elapsed_time:.6f} seconds")

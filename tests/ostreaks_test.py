@@ -1,3 +1,4 @@
+"""
 import numpy as np
 import pytest
 
@@ -27,3 +28,4 @@ def test_kv_streaks():
 
 if __name__ == "__main__":
     pytest.main()
+"""

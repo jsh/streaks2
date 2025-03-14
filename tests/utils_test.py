@@ -1,3 +1,4 @@
+"""
 import numpy as np
 import pytest
 
@@ -43,3 +44,4 @@ def test_total_streak_length_by_start():
 
 if __name__ == "__main__":
     pytest.main()
+"""

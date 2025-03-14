@@ -24,6 +24,12 @@ class Streak:
     def __repr__(self):
         return f"Streak({self.streak})"
 
+    def __len__(self):
+        """
+        Returns the number of integers in the streak.
+        """
+        return len(self.streak)
+
 
 class Streaks:
     """
@@ -70,6 +76,12 @@ class Streaks:
     def __repr__(self):
         return f"Streaks({self.streaks})"
 
+    def __len__(self):
+        """
+        Returns the number of streaks in the Streaks object.
+        """
+        return len(self.streaks)
+
 
 class KvStreaks:
     """
@@ -112,3 +124,9 @@ class KvStreaks:
 
     def __repr__(self):
         return f"KvStreaks({self.kv_streaks})"
+
+    def __len__(self):
+        """
+        Returns the number of streaks in the KvStreaks object.
+        """
+        return len(self.kv_streaks)

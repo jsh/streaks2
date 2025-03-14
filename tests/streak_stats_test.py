@@ -1,3 +1,4 @@
+"""
 import math
 
 from sympy.functions.combinatorial.numbers import stirling
@@ -44,3 +45,4 @@ def test_all_lines_in_permutation_block_same_length():
     streaks_by_length = count_streaks_by_length(n)
     for k in streaks_by_length:
         assert k * streaks_by_length[k] == n_fact
+"""

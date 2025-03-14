@@ -89,3 +89,29 @@ def test_streaks_with_decreasing_numbers():
 def test_kv_streaks_with_decreasing_numbers():
     kv = KvStreaks([5, 4, 3, 2, 1])
     assert kv.kv_streaks == {5: 1, 4: 1, 3: 1, 2: 1, 1: 1}
+
+
+def test_streaks_len():
+    s = Streaks([1, 2, 3, 4, 5])
+    assert len(s) == 1
+    s = Streaks([5, 1, 3, 2, 4])
+    assert len(s) == 2
+    s = Streaks([])
+    assert len(s) == 0
+
+
+def test_kv_streaks_len():
+    kv = KvStreaks([1, 2, 3, 4, 5])
+    assert len(kv) == 1
+    kv = KvStreaks([5, 1, 3, 2, 4])
+    assert len(kv) == 2
+    kv = KvStreaks([])
+
+
+def test_streak_len():
+    s = Streak([1, 2, 3, 4, 5])
+    assert len(s) == 5
+    s = Streak([5])
+    assert len(s) == 1
+    s = Streak([])
+    assert len(s) == 0
