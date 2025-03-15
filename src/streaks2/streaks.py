@@ -2,6 +2,8 @@
 This module contains classes for working with streaks of integers.
 """
 
+from itertools import permutations
+
 
 class Streak:
     """
@@ -82,6 +84,20 @@ class Streaks:
         """
         return len(self.streaks)
 
+    @classmethod
+    def generate_streaks_for_all_permutations(cls, n):
+        """
+        Generates Streaks objects for every permutation of the integers from 1 to n (inclusive).
+
+        Args:
+            n (int): The upper limit of the range of integers to permute.
+
+        Yields:
+            Streaks: A Streaks object for each permutation.
+        """
+        for perm in permutations(range(1, n + 1)):
+            yield cls(perm)  # Use cls() to create a Streaks object
+
 
 class KvStreaks:
     """
@@ -130,3 +146,24 @@ class KvStreaks:
         Returns the number of streaks in the KvStreaks object.
         """
         return len(self.kv_streaks)
+
+    @classmethod
+    def generate_kv_streaks_for_all_permutations(cls, n):
+        """
+        Generates KvStreaks objects for every permutation of the integers from 1 to n (inclusive).
+
+        Args:
+            n (int): The upper limit of the range of integers to permute.
+
+        Yields:
+            KvStreaks: A KvStreaks object for each permutation.
+        """
+        for perm in permutations(range(1, n + 1)):
+            yield cls(perm)  # Use cls() to create a KvStreaks object
+
+
+# Example usage:
+if __name__ == "__main__":
+    n = 3
+    for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
+        print(kv_streaks)
