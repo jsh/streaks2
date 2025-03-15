@@ -106,6 +106,7 @@ def test_kv_streaks_len():
     kv = KvStreaks([5, 1, 3, 2, 4])
     assert len(kv) == 2
     kv = KvStreaks([])
+    assert len(kv) == 0
 
 
 def test_streak_len():
@@ -115,3 +116,17 @@ def test_streak_len():
     assert len(s) == 1
     s = Streak([])
     assert len(s) == 0
+
+    def test_streaks_generate_streaks_for_all_permutations():
+        n = 3
+        streaks_list = list(Streaks.generate_streaks_for_all_permutations(n))
+        assert len(streaks_list) == 6  # 3! = 6 permutations
+        for streaks in streaks_list:
+            assert isinstance(streaks, Streaks)
+
+    def test_kv_streaks_generate_kv_streaks_for_all_permutations():
+        n = 3
+        kv_streaks_list = list(KvStreaks.generate_kv_streaks_for_all_permutations(n))
+        assert len(kv_streaks_list) == 6  # 3! = 6 permutations
+        for kv_streaks in kv_streaks_list:
+            assert isinstance(kv_streaks, KvStreaks)
