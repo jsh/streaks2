@@ -1,21 +1,21 @@
-# import numpy as np
-# import sympy
+import numpy as np
+import sympy
 
-# GAMMA = float(sympy.S.EulerGamma)
+GAMMA = float(sympy.S.EulerGamma)
 
 
-# # generate a random permutation of range(n)
-# def random_permutation(n):
-#     """
-#     Generate a random permutation of integers from 0 to n-1.
+# generate a random permutation of range(n)
+def random_permutation(n):
+    """
+    Generate a random permutation of integers from 0 to n-1.
 
-#     Args:
-#         n (int): The upper limit (exclusive) for the range of integers to permute.
+    Args:
+        n (int): The upper limit (exclusive) for the range of integers to permute.
 
-#     Returns:
-#         list: A list containing a random permutation of integers from 0 to n-1.
-#     """
-#     return np.random.permutation(n)
+    Returns:
+        list: A list containing a random permutation of integers from 0 to n-1.
+    """
+    return np.random.permutation(n)
 
 
 # def first_kv_streak(seq):
