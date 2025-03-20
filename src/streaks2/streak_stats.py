@@ -6,6 +6,9 @@ import numpy as np
 from streaks2.streaks import KvStreaks
 from streaks2.utils import random_permutation
 
+SUMS = 0
+COL_AXIS, ROW_AXIS = 0, 1
+
 
 def print_kv_streaks(n):
     for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
@@ -27,17 +30,6 @@ def mean_streaks(n, trials=1):
     return sum(kv_streaks_count) / trials
 
 
-def derangements(n):
-    counts = np.zeros(n + 1, dtype=int)
-    for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
-        streaks = kv_streaks.kv_streaks
-        print(streaks)
-        for streak_length in range(n + 1):
-            if streak_length in streaks.values():
-                counts[streak_length] += 1
-    return counts
-
-
 def streak_lengths(n):
     counts = np.zeros((math.factorial(n) + 1, n + 1), dtype=int)
     perm_num = 0
@@ -50,11 +42,8 @@ def streak_lengths(n):
 
 
 def summarize_arr(arr):
-    SUMS = 0
-    COL_AXIS, ROW_AXIS = 0, 1
-
-    # assert np.all(arr[SUMS] == 0), "First row is not all zeros."
-    # assert np.all(arr[:, SUMS] == 0), "First column is not all zeros."
+    assert np.all(arr[SUMS] == 0), "First row is not all zeros."
+    assert np.all(arr[:, SUMS] == 0), "First column is not all zeros."
     col_sums = np.sum(arr, axis=COL_AXIS)  # Sum along columns
     row_sums = np.sum(arr, axis=ROW_AXIS)  # Sum along rows
     total = sum(col_sums)
@@ -88,7 +77,10 @@ def complement_binary_array(arr):
     Returns:
       A NumPy ndarray of the same shape, with 1s and 0s.
     """
-    return (arr == 0).astype(int)
+    complement = (arr == 0).astype(int)
+    complement[SUMS] = 0
+    complement[:, SUMS] = 0
+    return complement
 
 
 if __name__ == "__main__":
@@ -96,19 +88,20 @@ if __name__ == "__main__":
     #     print(f"{n}: {count_streak_lengths(n)}")
     # n = 100_000
     # print(mean_streaks(n, trials=100), math.log(n) + GAMMA)
-    n = 3
-    # print(f"{total_streaks(n)=}")
-    str_lens = streak_lengths(n)
-    len_present = create_binary_array(str_lens)
-    len_absent = complement_binary_array(str_lens)
-    print(f"{str_lens=}")
-    print("=" * 20)
-    print(f"{len_present=}")
-    print("=" * 20)
-    print(f"{len_absent=}")
-    print("=" * 20)
-    print(f"{summarize_arr(str_lens)=}")
-    print("=" * 20)
-    print(f"{summarize_arr(len_present)=}")
-    print("=" * 20)
-    print(f"{summarize_arr(len_absent)=}")
+    for n in range(5, 12):
+        str_lens = streak_lengths(n)
+        len_present = create_binary_array(str_lens)
+        len_absent = complement_binary_array(len_present)
+        all_perms = summarize_arr(str_lens)[SUMS][1]
+        derangements = summarize_arr(len_absent)[SUMS][1]
+        print(f"{n}: {all_perms / derangements}")
+    # print(f"{summarize_arr(str_lens)=}")
+    # print("=" * 20)
+    # print(f"{summarize_arr(len_present)=}")
+    # print("=" * 20)
+    # print(f"{summarize_arr(len_absent)=}")
+    # print(f"{summarize_arr(str_lens)[SUMS][1]=}")
+    # print("=" * 20)
+    # print(f"{summarize_arr(len_present)[SUMS][1]=}")
+    # print("=" * 20)
+    # print(f"{summarize_arr(len_absent)[SUMS][1]=}")
