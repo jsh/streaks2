@@ -6,6 +6,7 @@ import math
 from itertools import permutations
 
 import numpy as np
+from termcolor import colored
 
 from streaks2.utils import summarize_arr
 
@@ -189,10 +190,24 @@ class StrStats:
     def __repr__(self):
         return f"StrStats(n={self.n}, streaks_arr={self.streaks_arr})"
 
+    def __str__(self):
+        """Prints the array with arr[0] and arr[:, 0] in green using termcolor."""
+        s = ""
+        for i in range(self.streaks_arr.shape[0]):
+            for j in range(self.streaks_arr.shape[1]):
+                if i == 0 and j == 0:
+                    s += colored(f"{self.streaks_arr[i, j]}", "red") + " "
+                elif i == 0 or j == 0:
+                    s += colored(f"{self.streaks_arr[i, j]}", "green") + " "
+                else:
+                    s += f"{self.streaks_arr[i, j]} "
+            s += "\n"
+        return s
+
 
 # Example usage:
 if __name__ == "__main__":
-    n = 3
-    for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
-        print(kv_streaks)
+    n = 10
+    # for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
+    #     print(kv_streaks)
     print(StrStats(n))
