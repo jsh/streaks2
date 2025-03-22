@@ -17,3 +17,21 @@ def count_streaks_by_length(n):
             streak_counts[len(streak)] += 1
     return dict(sorted(streak_counts.items()))
 """
+# def print_kv_streaks(n):
+#     for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
+#         print(kv_streaks)
+
+
+# def count_streak_lengths(n):
+#     streak_length_counts = Counter()
+#     for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
+#         streak_length_counts[len(kv_streaks)] += 1
+#     return dict(sorted(streak_length_counts.items()))
+
+
+# def mean_streaks(n, trials=1):
+#     kv_streaks_count = []
+#     for _ in range(trials):
+#         kv_streaks = KvStreaks(list(random_permutation(n)))
+#         kv_streaks_count.append(len(kv_streaks))
+#     return sum(kv_streaks_count) / trials

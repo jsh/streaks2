@@ -2,7 +2,12 @@
 This module contains classes for working with streaks of integers.
 """
 
+import math
 from itertools import permutations
+
+import numpy as np
+
+from streaks2.utils import summarize_arr
 
 
 class Streak:
@@ -162,8 +167,32 @@ class KvStreaks:
             yield cls(perm)  # Use cls() to create a KvStreaks object
 
 
+class StrStats:
+    def __init__(self, n):
+        self.n = n
+        self.streaks_arr = self._find_streaks_arr(n)
+
+    def _find_streaks_arr(self, n):
+        lengths = self._streak_lengths(n)
+        return summarize_arr(lengths)
+
+    def _streak_lengths(self, n):
+        length_counts = np.zeros((math.factorial(n) + 1, n + 1), dtype=int)
+        perm_num = 0
+        for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
+            perm_num += 1
+            streaks = kv_streaks.kv_streaks
+            for streak_length in streaks.values():
+                length_counts[perm_num, streak_length] += 1
+        return length_counts
+
+    def __repr__(self):
+        return f"StrStats(n={self.n}, streaks_arr={self.streaks_arr})"
+
+
 # Example usage:
 if __name__ == "__main__":
     n = 3
     for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
         print(kv_streaks)
+    print(StrStats(n))
