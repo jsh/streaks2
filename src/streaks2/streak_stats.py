@@ -4,10 +4,7 @@ from collections import Counter
 import numpy as np
 
 from streaks2.streaks import KvStreaks
-from streaks2.utils import random_permutation
-
-SUMS = 0
-COL_AXIS, ROW_AXIS = 0, 1
+from streaks2.utils import random_permutation, summarize_arr
 
 
 def print_kv_streaks(n):
@@ -30,57 +27,34 @@ def mean_streaks(n, trials=1):
     return sum(kv_streaks_count) / trials
 
 
-def streak_lengths(n):
-    counts = np.zeros((math.factorial(n) + 1, n + 1), dtype=int)
-    perm_num = 0
-    for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
-        perm_num += 1
-        streaks = kv_streaks.kv_streaks
-        for streak_length in streaks.values():
-            counts[perm_num, streak_length] += 1
-    return counts
-
-
-def summarize_arr(arr):
-    assert np.all(arr[SUMS] == 0), "First row is not all zeros."
-    assert np.all(arr[:, SUMS] == 0), "First column is not all zeros."
-    col_sums = np.sum(arr, axis=COL_AXIS)  # Sum along columns
-    row_sums = np.sum(arr, axis=ROW_AXIS)  # Sum along rows
-    total = sum(col_sums)
-    assert total == sum(row_sums.flatten())  # cross-check
-    arr[SUMS] = col_sums
-    arr[:, SUMS] = row_sums.flatten()
-    arr[SUMS, SUMS] = total
-    return arr
-
-
-def create_binary_array(arr):
+class StrStats:
     """
-    Creates a binary array with 1s where arr is non-zero, and 0s otherwise.
-
-    Args:
-      arr: The input NumPy ndarray.
-
-    Returns:
-      A NumPy ndarray of the same shape, with 1s and 0s.
+    Represents streaks as a dictionary of streak lengths, indexed by the first element of the streak.
     """
-    return (arr != 0).astype(int)
 
+    def __init__(self, n):
+        """
+        .
+        """
+        self.n = n
+        self.streaks_arr = self._find_streaks_arr(n)
 
-def complement_binary_array(arr):
-    """
-    Creates a binary array with 0s where arr is non-zero, and 1s otherwise.
+    def _find_streaks_arr(self, n):
+        lengths = self._streak_lengths(n)
+        return summarize_arr(lengths)
 
-    Args:
-      arr: The input NumPy ndarray.
+    def _streak_lengths(self, n):
+        length_counts = np.zeros((math.factorial(n) + 1, n + 1), dtype=int)
+        perm_num = 0
+        for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
+            perm_num += 1
+            streaks = kv_streaks.kv_streaks
+            for streak_length in streaks.values():
+                length_counts[perm_num, streak_length] += 1
+        return length_counts
 
-    Returns:
-      A NumPy ndarray of the same shape, with 1s and 0s.
-    """
-    complement = (arr == 0).astype(int)
-    complement[SUMS] = 0
-    complement[:, SUMS] = 0
-    return complement
+    def __repr__(self):
+        return f"KvStreaksStats(n={self.n}, streaks_arr={self.streaks_arr})"
 
 
 if __name__ == "__main__":
@@ -88,13 +62,14 @@ if __name__ == "__main__":
     #     print(f"{n}: {count_streak_lengths(n)}")
     # n = 100_000
     # print(mean_streaks(n, trials=100), math.log(n) + GAMMA)
-    for n in range(5, 12):
-        str_lens = streak_lengths(n)
-        len_present = create_binary_array(str_lens)
-        len_absent = complement_binary_array(len_present)
-        all_perms = summarize_arr(str_lens)[SUMS][1]
-        derangements = summarize_arr(len_absent)[SUMS][1]
-        print(f"{n}: {all_perms / derangements}")
+    for n in range(2, 6):
+        print(StrStats(n))
+        # str_lens = streak_lengths(n)
+        # len_present = create_binary_array(str_lens)
+        # len_absent = complement_binary_array(len_present)
+        # all_perms = summarize_arr(str_lens)[SUMS][1]
+        # derangements = summarize_arr(len_absent)[SUMS][1]
+        # print(f"{n}: {all_perms / derangements}")
     # print(f"{summarize_arr(str_lens)=}")
     # print("=" * 20)
     # print(f"{summarize_arr(len_present)=}")
