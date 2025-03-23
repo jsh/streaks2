@@ -1,6 +1,6 @@
 import pytest
 
-from streaks2.streaks import KvStreaks, Streak, Streaks
+from streaks2.streaks import KvStreaks, Streak, Streaks, StrStats
 
 
 def test_streak_initialization():
@@ -117,16 +117,66 @@ def test_streak_len():
     s = Streak([])
     assert len(s) == 0
 
-    def test_streaks_generate_streaks_for_all_permutations():
-        n = 3
-        streaks_list = list(Streaks.generate_streaks_for_all_permutations(n))
-        assert len(streaks_list) == 6  # 3! = 6 permutations
-        for streaks in streaks_list:
-            assert isinstance(streaks, Streaks)
 
-    def test_kv_streaks_generate_kv_streaks_for_all_permutations():
-        n = 3
-        kv_streaks_list = list(KvStreaks.generate_kv_streaks_for_all_permutations(n))
-        assert len(kv_streaks_list) == 6  # 3! = 6 permutations
-        for kv_streaks in kv_streaks_list:
-            assert isinstance(kv_streaks, KvStreaks)
+def test_streaks_generate_streaks_for_all_permutations():
+    n = 3
+    streaks_list = list(Streaks.generate_streaks_for_all_permutations(n))
+    assert len(streaks_list) == 6  # 3! = 6 permutations
+    for streaks in streaks_list:
+        assert isinstance(streaks, Streaks)
+
+
+def test_kv_streaks_generate_kv_streaks_for_all_permutations():
+    n = 3
+    kv_streaks_list = list(KvStreaks.generate_kv_streaks_for_all_permutations(n))
+    assert len(kv_streaks_list) == 6  # 3! = 6 permutations
+    for kv_streaks in kv_streaks_list:
+        assert isinstance(kv_streaks, KvStreaks)
+
+
+def test_str_stats_initialization():
+    n = 3
+    stats = StrStats(n)
+    assert stats.n == n
+    assert stats.streaks_arr.shape == (7, 4)
+    assert stats.counts.shape == (4,)
+
+
+def test_str_stats_by_length():
+    n = 3
+    stats = StrStats(n)
+    assert len(stats.by_length()) == n
+
+
+def test_str_stats_by_count():
+    n = 3
+    stats = StrStats(n)
+    assert len(stats.by_count()) == n
+
+
+def test_str_stats_of_length():
+    n = 3
+    stats = StrStats(n)
+    assert stats.of_length(1) >= 0
+    assert stats.of_length(2) >= 0
+    assert stats.of_length(3) >= 0
+
+
+def test_str_stats_of_count():
+    n = 3
+    stats = StrStats(n)
+    assert stats.of_count(1) >= 0
+    assert stats.of_count(2) >= 0
+    assert stats.of_count(3) >= 0
+
+
+def test_str_stats_repr():
+    n = 3
+    stats = StrStats(n)
+    assert repr(stats).startswith("StrStats(n=3, streaks_arr=")
+
+
+def test_str_stats_str():
+    n = 3
+    stats = StrStats(n)
+    assert isinstance(str(stats), str)
