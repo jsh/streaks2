@@ -2,13 +2,13 @@
 This module contains classes for working with streaks of integers.
 """
 
-import math
 from itertools import permutations
+from math import factorial
 
 import numpy as np
 from termcolor import colored
 
-from streaks2.utils import summarize_arr
+from streaks2.utils import SUMS, summarize_arr
 
 
 class Streak:
@@ -172,13 +172,14 @@ class StrStats:
     def __init__(self, n):
         self.n = n
         self.streaks_arr = self._find_streaks_arr(n)
+        self.counts = self._streak_counts()
 
     def _find_streaks_arr(self, n):
         lengths = self._streak_lengths(n)
         return summarize_arr(lengths)
 
     def _streak_lengths(self, n):
-        length_counts = np.zeros((math.factorial(n) + 1, n + 1), dtype=int)
+        length_counts = np.zeros((factorial(n) + 1, n + 1), dtype=int)
         perm_num = 0
         for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
             perm_num += 1
@@ -186,6 +187,55 @@ class StrStats:
             for streak_length in streaks.values():
                 length_counts[perm_num, streak_length] += 1
         return length_counts
+
+    def _streak_counts(self):
+        counts = np.zeros(self.n + 1, dtype=int)
+        for i in range(1, factorial(self.n) + 1):
+            counts[self.streaks_arr[i, SUMS]] += 1
+        counts[SUMS] = sum(counts)
+        return counts
+
+    def by_length(self):
+        """
+        Returns the number of streaks by length.
+
+        Returns:
+            list: A list of integers representing the number of streaks by length.
+        """
+        return self.streaks_arr[SUMS, 1:]
+
+    def by_count(self):
+        """
+        The number of permutations containing each streak count.
+
+        Returns:
+            list: A list of integers representing the number of streaks by count.
+        """
+        return self.counts[1:]
+
+    def of_length(self, length):
+        """
+        Returns the number of streaks of a given length.
+
+        Args:
+            length (int): The length of the streak to count.
+
+        Returns:
+            int: The number of streaks of the given length.
+        """
+        return self.streaks_arr[SUMS, length]
+
+    def of_count(self, count):
+        """
+        Returns the number of permutations that have the specified streak count.
+
+        Args:
+            count (int): The number of streaks in the permutation.
+
+        Returns:
+            int: The number of permutations with that many streaks.
+        """
+        return self.counts[count]
 
     def __repr__(self):
         return f"StrStats(n={self.n}, streaks_arr={self.streaks_arr})"
@@ -207,7 +257,13 @@ class StrStats:
 
 # Example usage:
 if __name__ == "__main__":
-    n = 10
+    n = 4
     # for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
     #     print(kv_streaks)
     print(StrStats(n))
+    print(f"lengths: {StrStats(n).by_length()}")
+    print(f"counts: {StrStats(n).by_count()}")
+    for i in range(1, n + 1):
+        print(f"Streaks of length {i}: {StrStats(n).of_length(i)}")
+    for i in range(1, n + 1):
+        print(f"Permutations with {i} streaks: {StrStats(n).of_count(i)}")
