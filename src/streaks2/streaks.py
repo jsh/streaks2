@@ -253,17 +253,3 @@ class StrStats:
                     s += f"{self.streaks_arr[i, j]} "
             s += "\n"
         return s
-
-
-# Example usage:
-if __name__ == "__main__":
-    n = 4
-    # for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
-    #     print(kv_streaks)
-    print(StrStats(n))
-    print(f"lengths: {StrStats(n).by_length()}")
-    print(f"counts: {StrStats(n).by_count()}")
-    for i in range(1, n + 1):
-        print(f"Streaks of length {i}: {StrStats(n).of_length(i)}")
-    for i in range(1, n + 1):
-        print(f"Permutations with {i} streaks: {StrStats(n).of_count(i)}")
