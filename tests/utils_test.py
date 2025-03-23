@@ -1,47 +1,57 @@
-"""
 import numpy as np
 import pytest
 
-from streaks2.streaks import (
-    first_kv_streak,
-    random_permutation,
-    streak_count_by_start,
-    total_streak_length_by_start,
-)
+from streaks2 import utils
 
 
 def test_random_permutation():
-    n = 10
-    perm = random_permutation(n)
-    assert len(perm) == n
-    assert sorted(perm) == list(range(n))
+    n = 5
+    permutation = utils.random_permutation(n)
+    assert len(permutation) == n
+    assert all(i in permutation for i in range(n))
 
 
-def test_first_kv_streak():
-    assert first_kv_streak(np.array([])) == ()
-    assert first_kv_streak(np.array([1])) == (1, 1)
-    assert first_kv_streak(np.array([1, 2, 3])) == (1, 3)
-    assert first_kv_streak(np.array([3, 2, 1])) == (3, 1)
-    assert first_kv_streak(np.array([2, 1, 3])) == (2, 1)
-    assert first_kv_streak(np.array([1, 3, 2, 4])) == (1, 4)
+def test_summarize_arr():
+    arr = np.array([[0, 0, 0], [0, 1, 2], [0, 3, 4]])
+    expected = np.array([[10, 4, 6], [3, 1, 2], [7, 3, 4]])
+    result = utils.summarize_arr(arr.copy())  # copy to avoid modifying original
+    np.testing.assert_array_equal(result, expected)
+
+    arr2 = np.array([[0, 0], [0, 0]])
+    expected2 = np.array([[0, 0], [0, 0]])
+    result2 = utils.summarize_arr(arr2.copy())
+    np.testing.assert_array_equal(result2, expected2)
 
 
-def test_streak_inits():
-    assert streak_count_by_start(1) == {1: 1}
-    assert streak_count_by_start(2) == {1: 2, 2: 1}
-    assert streak_count_by_start(3) == {1: 6, 2: 3, 3: 2}
-    assert streak_count_by_start(4) == {1: 24, 2: 12, 3: 8, 4: 6}
-    assert streak_count_by_start(5) == {1: 120, 2: 60, 3: 40, 4: 30, 5: 24}
+def test_summarize_arr_assertions():
+    arr = np.array([[1, 0, 0], [0, 1, 2], [0, 3, 4]])
+    with pytest.raises(AssertionError):
+        utils.summarize_arr(arr)
+
+    arr = np.array([[0, 1, 0], [0, 1, 2], [0, 3, 4]])
+    with pytest.raises(AssertionError):
+        utils.summarize_arr(arr)
 
 
-def test_total_streak_length_by_start():
-    assert total_streak_length_by_start(1) == {1: 1}
-    assert total_streak_length_by_start(2) == {1: 3, 2: 1}
-    assert total_streak_length_by_start(3) == {1: 12, 2: 4, 3: 2}
-    assert total_streak_length_by_start(4) == {1: 60, 2: 20, 3: 10, 4: 6}
-    assert total_streak_length_by_start(5) == {1: 360, 2: 120, 3: 60, 4: 36, 5: 24}
+def test_create_binary_arr():
+    arr = np.array([[0, 1, 2], [3, 0, 4]])
+    expected = np.array([[0, 1, 1], [1, 0, 1]])
+    result = utils.create_binary_arr(arr)
+    np.testing.assert_array_equal(result, expected)
+
+    arr2 = np.array([[0, 0], [0, 0]])
+    expected2 = np.array([[0, 0], [0, 0]])
+    result2 = utils.create_binary_arr(arr2)
+    np.testing.assert_array_equal(result2, expected2)
 
 
-if __name__ == "__main__":
-    pytest.main()
-"""
+def test_complement_binary_arr():
+    arr = np.array([[0, 1, 0], [1, 0, 1]])
+    expected = np.array([[0, 0, 0], [0, 1, 0]])
+    result = utils.complement_binary_arr(arr)
+    np.testing.assert_array_equal(result, expected)
+
+    arr2 = np.array([[0, 0], [0, 0]])
+    expected2 = np.array([[0, 0], [0, 1]])
+    result2 = utils.complement_binary_arr(arr2)
+    np.testing.assert_array_equal(result2, expected2)
