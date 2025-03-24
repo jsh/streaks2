@@ -138,7 +138,7 @@ def test_str_stats_initialization():
     n = 3
     stats = StrStats(n)
     assert stats.n == n
-    assert stats.streaks_arr.shape == (7, 4)
+    assert stats.streaks_arr.shape == (7, 4)  # factorial(3) + 1, 3 + 1
     assert stats.counts.shape == (4,)
 
 
@@ -157,17 +157,17 @@ def test_str_stats_by_count():
 def test_str_stats_of_length():
     n = 3
     stats = StrStats(n)
-    assert stats.of_length(1) >= 0
-    assert stats.of_length(2) >= 0
-    assert stats.of_length(3) >= 0
+    assert stats.of_length(1) == 6
+    assert stats.of_length(2) == 3
+    assert stats.of_length(3) == 2
 
 
 def test_str_stats_of_count():
     n = 3
     stats = StrStats(n)
-    assert stats.of_count(1) >= 0
-    assert stats.of_count(2) >= 0
-    assert stats.of_count(3) >= 0
+    assert stats.of_count(1) == 2
+    assert stats.of_count(2) == 3
+    assert stats.of_count(3) == 1
 
 
 def test_str_stats_repr():
