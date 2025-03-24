@@ -78,7 +78,7 @@
 #     Returns:
 #         A dictionary counting the total length of streaks starting with each integer.
 #         This turns out to be {k: (n+1)!/(k+1)*k} for k in 1..n.
-#     """
+#     """too
 #     lengths = Counter()
 #     for perm in permutations(range(1, n + 1)):
 #         kv_streaks = KvStreaks(perm)
