@@ -1,0 +1,92 @@
+# if __name__ == "__main__":
+# for n in range(3, 7):
+#     print(f"{n}: {count_streak_lengths(n)}")
+# n = 100_000
+# print(mean_streaks(n, trials=100), math.log(n) + GAMMA)
+# for n in range(2, 6):
+# print(StrStats(n))
+# str_lens = streak_lengths(n)
+# len_present = create_binary_array(str_lens)
+# len_absent = complement_binary_array(len_present)
+# all_perms = summarize_arr(str_lens)[SUMS][1]
+# derangements = summarize_arr(len_absent)[SUMS][1]
+# print(f"{n}: {all_perms / derangements}")
+# print(f"{summarize_arr(str_lens)=}")
+# print("=" * 20)
+# print(f"{summarize_arr(len_present)=}")
+# print("=" * 20)
+# print(f"{summarize_arr(len_absent)=}")
+# print(f"{summarize_arr(str_lens)[SUMS][1]=}")
+# print("=" * 20)
+# print(f"{summarize_arr(len_present)[SUMS][1]=}")
+# print("=" * 20)
+# print(f"{summarize_arr(len_absent)[SUMS][1]=}")
+
+
+# def first_kv_streak(seq):
+#     """
+#     Return the first key-value pair of the streaks in seq.
+
+#     Args:
+#         seq (list): A list of distinct integers.
+
+#     Returns:
+#         a tuple of the first key-value pair of the streaks in seq.
+#     """
+#     if (type(seq) is np.ndarray) and (not seq.any()):
+#         return ()
+#     elif (type(seq) is list) and (not seq):
+#         return ()
+
+#     streak_start = seq[0]
+#     streak_length = 1
+
+#     for i in range(1, len(seq)):
+#         if seq[i] > streak_start:
+#             streak_length += 1
+#         else:
+#             break
+
+#     return (int(streak_start), streak_length)
+
+
+# def streak_count_by_start(n):
+#     """
+#     Count how many streaks start with each integer, over all permutations.
+
+#     Args:
+#         n (int): The number of elements to permute.
+#         The permutations will be of the integers from 1 to n.
+
+#     Returns:
+#         A dictionary counting the number of permutations
+#         for which each integer starts a streak.
+#         This should be {k: n!/k} for k in 1..n.
+#     """
+#     starts = Counter()
+#     for perm in permutations(range(1, n + 1)):
+#         kv_streaks = KvStreaks(perm)
+#         starts_in_perm = kv_streaks.kv_streaks.keys()
+#         starts += Counter(starts_in_perm)
+#     return dict(starts)
+
+
+# def total_streak_length_by_start(n):
+#     """
+#     Count the total length of streaks starting with each integer, over all permutations.
+
+#     Returns:
+#         A dictionary counting the total length of streaks starting with each integer.
+#         This turns out to be {k: (n+1)!/(k+1)*k} for k in 1..n.
+#     """
+#     lengths = Counter()
+#     for perm in permutations(range(1, n + 1)):
+#         kv_streaks = KvStreaks(perm)
+#         lengths += Counter(kv_streaks.kv_streaks)
+#     return {k: v for k, v in lengths.items()}
+# def mean_streaks(n, trials=1):
+#     kv_streaks_count = []
+#     for _ in range(trials):
+#         kv_streaks = KvStreaks(list(random_permutation(n)))
+#         kv_streaks_count.append(len(kv_streaks))
+#     return sum(kv_streaks_count) / trials
