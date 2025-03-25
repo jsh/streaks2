@@ -3,6 +3,7 @@ __pycache__/
 *.py[oc]
 build/
 dist/
+mutants/
 wheels/
 *.egg-info
 

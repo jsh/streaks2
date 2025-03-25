@@ -24,12 +24,12 @@ def test_summarize_arr():
 
 
 def test_summarize_arr_assertions():
-    arr = np.array([[1, 0, 0], [0, 1, 2], [0, 3, 4]])
-    with pytest.raises(AssertionError):
+    arr = np.array([[0, 0, 0], [1, 1, 2], [0, 3, 4]])
+    with pytest.raises(AssertionError, match=r"^First column is not all zeros.$"):
         utils.summarize_arr(arr)
 
     arr = np.array([[0, 1, 0], [0, 1, 2], [0, 3, 4]])
-    with pytest.raises(AssertionError):
+    with pytest.raises(AssertionError, match=r"^First row is not all zeros.$"):
         utils.summarize_arr(arr)
 
 
