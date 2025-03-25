@@ -45,6 +45,12 @@ def test_create_binary_arr():
     np.testing.assert_array_equal(result2, expected2)
 
 
+def test_binary_array_dtype():
+    arr = np.array([[0, 1, 2], [3, 0, 4]])
+    result = utils.create_binary_arr(arr)
+    assert result.dtype == int
+
+
 def test_complement_binary_arr():
     arr = np.array([[0, 1, 0], [1, 0, 1]])
     expected = np.array([[0, 0, 0], [0, 1, 0]])
@@ -55,3 +61,9 @@ def test_complement_binary_arr():
     expected2 = np.array([[0, 0], [0, 1]])
     result2 = utils.complement_binary_arr(arr2)
     np.testing.assert_array_equal(result2, expected2)
+
+
+def test_complement_array_dtype():
+    arr = np.array([[0, 1, 0], [1, 0, 1]])
+    result = utils.complement_binary_arr(arr)
+    assert result.dtype == int
