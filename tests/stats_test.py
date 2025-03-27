@@ -1,4 +1,4 @@
-from math import factorial
+from math import exp, factorial
 
 import numpy as np
 from sympy.functions.combinatorial.numbers import stirling
@@ -33,4 +33,15 @@ def test_streak_lengths_match_expected():
         expected = expected[1:]
         assert np.array_equal(streak_lengths, expected), (
             f"Streak lengths do not match expected for n={n}"
+        )
+
+
+def test_missing_streak_lengths_as_expected():
+    for n in range(1, 10):
+        missings = StrStats(n).missing_streak_lengths()[1:]
+        p_zero = [exp(-1 / k) for k in range(1, n + 1)]
+        total_permutations = factorial(n)
+        expected_missings = [total_permutations * p for p in p_zero]
+        assert np.all((expected_missings - missings) == np.zeros(n)), (
+            f"Failed for n = {n}"
         )

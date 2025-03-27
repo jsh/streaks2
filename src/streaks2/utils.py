@@ -60,3 +60,27 @@ def complement_binary_arr(arr):
     complement[SUMS] = 0
     complement[:, SUMS] = 0
     return complement
+
+
+def assert_array_approx_equal(arr1, arr2, tolerance=1e-6):
+    """
+    Asserts that two NumPy arrays of floats are approximately equal element-wise.
+
+    Args:
+        arr1: The first NumPy array.
+        arr2: The second NumPy array.
+        tolerance: The maximum absolute difference allowed between corresponding elements.
+                   Defaults to 1e-6.
+
+    Raises:
+        AssertionError: If the arrays are not approximately equal.
+    """
+    assert arr1.shape == arr2.shape, (
+        f"Arrays have different shapes: {arr1.shape} vs {arr2.shape}"
+    )
+
+    diff = np.abs(arr1 - arr2)
+
+    assert np.all(diff <= tolerance), (
+        f"Arrays are not approximately equal within tolerance {tolerance}. Max difference: {np.max(diff)}"
+    )

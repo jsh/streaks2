@@ -8,7 +8,7 @@ from math import factorial
 import numpy as np
 from termcolor import colored
 
-from streaks2.utils import SUMS, summarize_arr
+from streaks2.utils import SUMS, complement_binary_arr, create_binary_arr, summarize_arr
 
 
 class Streak:
@@ -236,6 +236,14 @@ class StrStats:
             int: The number of permutations with that many streaks.
         """
         return self.counts[count]
+
+    def _streak_length_absent(self):
+        present = create_binary_arr(self.streaks_arr)
+        absent = complement_binary_arr(present)
+        return summarize_arr(absent)
+
+    def missing_streak_lengths(self):
+        return self._streak_length_absent()[SUMS]
 
     def __repr__(self):
         return f"StrStats(n={self.n}, streaks_arr={self.streaks_arr})"
