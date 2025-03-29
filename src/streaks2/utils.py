@@ -84,3 +84,29 @@ def assert_array_approx_equal(arr1, arr2, tolerance=1e-6):
     assert np.all(diff <= tolerance), (
         f"Arrays are not approximately equal within tolerance {tolerance}. Max difference: {np.max(diff)}"
     )
+
+
+def create_array_from_kv(K, V):
+    """
+    Creates an ndarray A where A[K[i]] = V[i] and remaining values are 0.
+
+    Args:
+        K: 1D integer ndarray of keys.
+        V: 1D integer ndarray of values (same size as K).
+
+    Returns:
+        1D ndarray A.
+    """
+
+    if K.size != V.size:
+        raise ValueError("K and V arrays must have the same size.")
+
+    if K.size == 0:
+        return np.array([])
+
+    max_index = np.max(K)
+    A = np.zeros(max_index + 1, dtype=V.dtype)  # Initialize A with zeros
+
+    A[K] = V  # Assign values based on K and V
+
+    return A
