@@ -12,3 +12,6 @@ wheels/
 # Testing-tool generated
 .coverage
 mutants/
+
+# Random, transitory stuff
+playground/
