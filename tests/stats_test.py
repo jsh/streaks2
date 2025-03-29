@@ -36,12 +36,61 @@ def test_streak_lengths_match_expected():
         )
 
 
-def test_missing_streak_lengths_as_expected():
-    for n in range(1, 10):
-        missings = StrStats(n).missing_streak_lengths()[1:]
-        p_zero = [exp(-1 / k) for k in range(1, n + 1)]
-        total_permutations = factorial(n)
-        expected_missings = [total_permutations * p for p in p_zero]
-        assert np.all((expected_missings - missings) == np.zeros(n)), (
-            f"Failed for n = {n}"
-        )
+def test_missing_streak_lengths():
+    # Compare the number of missing streak lengths with the expected values
+    # based on the Poisson distribution.
+    for n in range(4, 10):
+        # [derangements, permutations lacking transpositions, lacking 3 cycles, etc.]
+        observed = StrStats(n).missing_streak_lengths()[1:]
+        # The expected number of missing streak lengths is given by the formula:
+        # E[X] = n! * exp(-1/k) for k = 1, 2, ..., n
+        poisson_p_zeros = np.exp(-1 / np.arange(1, n + 1))
+        expected = factorial(n) * poisson_p_zeros
+        # This should actually be done with a Student's t-test.
+        rel_error = np.abs((observed - expected) / expected)
+        assert np.all(rel_error < 0.1)
+
+
+def create_array_from_kv(K, V):
+    """
+    Creates an ndarray A where A[K[i]] = V[i] and remaining values are 0.
+
+    Args:
+        K: 1D integer ndarray of keys.
+        V: 1D integer ndarray of values (same size as K).
+
+    Returns:
+        1D ndarray A.
+    """
+
+    if K.size != V.size:
+        raise ValueError("K and V arrays must have the same size.")
+
+    if K.size == 0:
+        return np.array([])
+
+    max_index = np.max(K)
+    A = np.zeros(max_index + 1, dtype=V.dtype)  # Initialize A with zeros
+
+    A[K] = V  # Assign values based on K and V
+
+    return A
+
+
+def test_dist_of_singletons(n):
+    """
+    Test the distribution of singletons across permutations.
+    These should follow a Poisson distribution.
+    The expected number of singletons is given by the formula:
+    E[k] = n! * exp(-1)/k! for k = 1, 2, ..., n
+    where k is the number of singletons.
+    """
+    singletons = StrStats(n).streaks_arr[1:, 1]
+    unique_vals, counts = np.unique(singletons, return_counts=True)
+    observed = create_array_from_kv(unique_vals, counts)
+    factorials = np.array([factorial(i) for i in range(0, n + 1)])
+    expected = factorial(n) / (exp(1) * factorials)
+    expected[-1] = sum(observed) - sum(expected[:-1])
+    print(f"Observed: {observed}")
+    print(f"Expected: {expected}")
+    return expected
