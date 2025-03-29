@@ -1,4 +1,7 @@
+from math import factorial
+
 import numpy as np
+import scipy.stats as stats
 import sympy
 
 GAMMA = float(sympy.S.EulerGamma)
@@ -62,30 +65,6 @@ def complement_binary_arr(arr):
     return complement
 
 
-def assert_array_approx_equal(arr1, arr2, tolerance=1e-6):
-    """
-    Asserts that two NumPy arrays of floats are approximately equal element-wise.
-
-    Args:
-        arr1: The first NumPy array.
-        arr2: The second NumPy array.
-        tolerance: The maximum absolute difference allowed between corresponding elements.
-                   Defaults to 1e-6.
-
-    Raises:
-        AssertionError: If the arrays are not approximately equal.
-    """
-    assert arr1.shape == arr2.shape, (
-        f"Arrays have different shapes: {arr1.shape} vs {arr2.shape}"
-    )
-
-    diff = np.abs(arr1 - arr2)
-
-    assert np.all(diff <= tolerance), (
-        f"Arrays are not approximately equal within tolerance {tolerance}. Max difference: {np.max(diff)}"
-    )
-
-
 def create_array_from_kv(K, V):
     """
     Creates an ndarray A where A[K[i]] = V[i] and remaining values are 0.
@@ -110,3 +89,34 @@ def create_array_from_kv(K, V):
     A[K] = V  # Assign values based on K and V
 
     return A
+
+    # expected_frequencies[k] = (mean**k * np.exp(-mean)) / math.factorial(k)
+
+
+# return expected frequencies for a poisson distribution with mean 1
+def poisson_expected_frequencies(n, mean=1):
+    expected_frequencies = np.zeros(n)
+    for k in range(n):
+        expected_frequencies[k] = (mean**k * np.exp(-mean)) / factorial(k)
+    return expected_frequencies
+
+
+# Do the observed frequencies follow a Poisson distribution?
+def poisson_chisquare_test(observed_frequencies, mean=1):
+    n = len(observed_frequencies)
+    expected_frequencies = poisson_expected_frequencies(n, mean)
+    # Scale the expected frequencies to match the total count in A
+    total_count = np.sum(observed_frequencies)
+    expected_frequencies *= total_count
+    # Perform the chi-squared test
+    _, p_value = stats.chisquare(observed_frequencies, f_exp=expected_frequencies)
+    return p_value
+
+
+# Interpretation:
+# alpha = 0.05  # Significance level
+
+# if p_value < alpha:
+#     print("Reject the null hypothesis: Observed frequencies are significantly different from expected.")
+# else:
+#     print("Fail to reject the null hypothesis: Observed frequencies are not significantly different from expected.")
