@@ -1,7 +1,4 @@
-from math import factorial
-
 import numpy as np
-import scipy.stats as stats
 import sympy
 
 GAMMA = float(sympy.S.EulerGamma)
@@ -76,52 +73,52 @@ def invert_zeros_and_nonzeros(arr: np.ndarray) -> np.ndarray:
     return np.where(arr == 0, 1, 0)
 
 
-def create_array_from_kv(K, V):
+def create_array_from_kv(keys, vals):
     """
-    Creates an ndarray A where A[K[i]] = V[i] and remaining values are 0.
+    Creates an ndarray arr where arr[keys[i]] = vals[i] and remaining values are 0.
 
     Args:
-        K: 1D integer ndarray of keys.
-        V: 1D integer ndarray of values (same size as K).
+        keys: 1D integer ndarray of keys.
+        values: 1D integer ndarray of values (same size as keys).
 
     Returns:
-        1D ndarray A.
+        1D ndarray arr.
     """
 
-    if K.size != V.size:
-        raise ValueError("K and V arrays must have the same size.")
+    if keys.size != vals.size:
+        raise ValueError("keys and vals arrays must have the same size.")
 
-    if K.size == 0:
+    if keys.size == 0:
         return np.array([])
 
-    max_index = np.max(K)
-    A = np.zeros(max_index + 1, dtype=V.dtype)  # Initialize A with zeros
+    max_index = np.max(keys)
+    arr = np.zeros(max_index + 1, dtype=int)  # Initialize arr with zeros
 
-    A[K] = V  # Assign values based on K and V
+    arr[keys] = vals  # Assign values based on keys and vals
 
-    return A
+    return arr
 
     # expected_frequencies[k] = (mean**k * np.exp(-mean)) / math.factorial(k)
 
 
-# return expected frequencies for a poisson distribution with mean 1
-def poisson_expected_frequencies(n, mean=1):
-    expected_frequencies = np.zeros(n)
-    for k in range(n):
-        expected_frequencies[k] = (mean**k * np.exp(-mean)) / factorial(k)
-    return expected_frequencies
+# # return expected frequencies for a poisson distribution with mean 1
+# def poisson_expected_frequencies(n, mean=1):
+#     expected_frequencies = np.zeros(n)
+#     for k in range(n):
+#         expected_frequencies[k] = (mean**k * np.exp(-mean)) / factorial(k)
+#     return expected_frequencies
 
 
-# Do the observed frequencies follow a Poisson distribution?
-def poisson_chisquare_test(observed_frequencies, mean=1):
-    n = len(observed_frequencies)
-    expected_frequencies = poisson_expected_frequencies(n, mean)
-    # Scale the expected frequencies to match the total count in A
-    total_count = np.sum(observed_frequencies)
-    expected_frequencies *= total_count
-    # Perform the chi-squared test
-    _, p_value = stats.chisquare(observed_frequencies, f_exp=expected_frequencies)
-    return p_value
+# # Do the observed frequencies follow a Poisson distribution?
+# def poisson_chisquare_test(observed_frequencies, mean=1):
+#     n = len(observed_frequencies)
+#     expected_frequencies = poisson_expected_frequencies(n, mean)
+#     # Scale the expected frequencies to match the total count in A
+#     total_count = np.sum(observed_frequencies)
+#     expected_frequencies *= total_count
+#     # Perform the chi-squared test
+#     _, p_value = stats.chisquare(observed_frequencies, f_exp=expected_frequencies)
+#     return p_value
 
 
 # Interpretation:
