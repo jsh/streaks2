@@ -23,46 +23,57 @@ def random_permutation(n):
     return np.random.permutation(n)
 
 
-def summarize_arr(arr):
-    assert np.all(arr[SUMS] == 0), "First row is not all zeros."
-    assert np.all(arr[:, SUMS] == 0), "First column is not all zeros."
-    col_sums = np.sum(arr, axis=COL_AXIS)  # Sum along columns
-    row_sums = np.sum(arr, axis=ROW_AXIS)  # Sum along rows
-    total = sum(col_sums)
-    assert total == sum(row_sums.flatten())  # cross-check
-    arr[SUMS] = col_sums
-    arr[:, SUMS] = row_sums.flatten()
-    arr[SUMS, SUMS] = total
-    return arr
+# def summarize_arr(arr):
+#     assert np.all(arr[SUMS] == 0), "First row is not all zeros."
+#     assert np.all(arr[:, SUMS] == 0), "First column is not all zeros."
+#     col_sums = np.sum(arr, axis=COL_AXIS)  # Sum along columns
+#     row_sums = np.sum(arr, axis=ROW_AXIS)  # Sum along rows
+#     total = sum(col_sums)
+#     assert total == sum(row_sums.flatten())  # cross-check
+#     arr[SUMS] = col_sums
+#     arr[:, SUMS] = row_sums.flatten()
+#     arr[SUMS, SUMS] = total
+#     return arr
 
 
-def create_binary_arr(arr):
+def summarize_arr(arr: np.ndarray) -> np.ndarray:
     """
-    Creates a binary array with 1s where arr is non-zero, and 0s otherwise.
+    Replaces the first row with column sums and the first column with row sums.
 
     Args:
-      arr: The input NumPy ndarray.
+        arr: An mxn ndarray.
 
     Returns:
-      A NumPy ndarray of the same shape, with 1s and 0s.
+        An mxn ndarray with the first row and column replaced.
     """
-    return (arr != 0).astype(int)
+    m, n = arr.shape
+    if m <= 1 or n <= 1:
+        return arr.copy()  # Nothing to sum if there's only one row/column or less
+
+    column_sums = np.sum(arr[1:, :], axis=0)
+    row_sums = np.sum(arr[:, 1:], axis=1)
+
+    arr_copy = arr.copy()
+    arr_copy[0, :] = column_sums
+    arr_copy[:, 0] = row_sums
+
+    # Handle the intersection of row 0 and column 0, which should be the sum of all remaining elements.
+    arr_copy[0, 0] = np.sum(arr[1:, 1:])
+
+    return arr_copy
 
 
-def complement_binary_arr(arr):
+def invert_zeros_and_nonzeros(arr: np.ndarray) -> np.ndarray:
     """
-    Creates a binary array with 0s where arr is non-zero, and 1s otherwise.
+    Inverts zeros and non-zeros in an ndarray.
 
     Args:
-      arr: The input NumPy ndarray.
+        arr: An ndarray of integers.
 
     Returns:
-      A NumPy ndarray of the same shape, with 1s and 0s.
+        An ndarray with 1s where arr contained 0s, and 0s where arr contained non-zeros.
     """
-    complement = (arr == 0).astype(int)
-    complement[SUMS] = 0
-    complement[:, SUMS] = 0
-    return complement
+    return np.where(arr == 0, 1, 0)
 
 
 def create_array_from_kv(K, V):

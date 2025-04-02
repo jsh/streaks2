@@ -8,7 +8,7 @@ from math import factorial
 import numpy as np
 from termcolor import colored
 
-from streaks2.utils import SUMS, complement_binary_arr, create_binary_arr, summarize_arr
+from streaks2.utils import SUMS, invert_zeros_and_nonzeros, summarize_arr
 
 
 class Streak:
@@ -238,8 +238,7 @@ class StrStats:
         return self.counts[count]
 
     def _streak_length_absent(self):
-        present = create_binary_arr(self.streaks_arr)
-        absent = complement_binary_arr(present)
+        absent = invert_zeros_and_nonzeros(self.streaks_arr)
         return summarize_arr(absent)
 
     def missing_streak_lengths(self):
