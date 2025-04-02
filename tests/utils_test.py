@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from streaks2 import utils
 
@@ -106,3 +107,12 @@ def test_create_array_from_kv():
     result6 = utils.create_array_from_kv(keys6, vals6)
     np.testing.assert_array_equal(result6, expected6)
     assert result6.dtype == int
+
+
+def test_create_array_from_kv_raises():
+    keys = np.array([0, 1, 2])
+    vals = np.array([10, 20])
+    with pytest.raises(
+        ValueError, match=r"^keys and vals arrays must have the same size.$"
+    ):
+        utils.create_array_from_kv(keys, vals)
