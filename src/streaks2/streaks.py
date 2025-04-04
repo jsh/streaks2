@@ -1,6 +1,6 @@
 from itertools import permutations
 from math import factorial
-from typing import List, Dict, Generator
+from typing import Generator, List
 
 import numpy as np
 from termcolor import colored
@@ -22,7 +22,8 @@ class Streak:
                                  The first element should be the smallest.
         """
         if seq:
-            assert min(seq) == seq[0]
+            if min(seq) != seq[0]:
+                raise ValueError("Streak must start with the smallest element.")
         self.streak = seq
 
     def __repr__(self) -> str:
@@ -33,6 +34,18 @@ class Streak:
         Returns the number of integers in the streak.
         """
         return len(self.streak)
+
+    def __eq__(self, other: "Streak") -> bool:
+        """
+        Checks if two Streak objects are equal.
+
+        Args:
+            other (Streak): Another Streak object to compare.
+
+        Returns:
+            bool: True if the streaks are equal, False otherwise.
+        """
+        return self.streak == other.streak
 
 
 class Streaks:
@@ -47,7 +60,8 @@ class Streaks:
         Args:
             seq (list): An integer sequence to decompose into streaks.
         """
-        assert len(seq) == len(set(seq))
+        if len(seq) != len(set(seq)):
+            raise ValueError("Sequence must contain distinct elements.")
         self.streaks = self._find_streaks(seq)
 
     def _find_streaks(self, seq: List[int]) -> List[Streak]:
@@ -86,7 +100,9 @@ class Streaks:
         return len(self.streaks)
 
     @classmethod
-    def generate_streaks_for_all_permutations(cls, n: int) -> Generator['Streaks', None, None]:
+    def generate_streaks_for_all_permutations(
+        cls, n: int
+    ) -> Generator["Streaks", None, None]:
         """
         Generates Streaks objects for every permutation of the integers from 1 to n (inclusive).
 
@@ -112,7 +128,8 @@ class KvStreaks:
         Args:
             seq (list): A list of integers to analyze for streaks.
         """
-        assert len(seq) == len(set(seq))
+        if len(seq) != len(set(seq)):
+            raise ValueError("Sequence must contain distinct elements.")
         self.kv_streaks = {}
         self._find_kv_streaks(seq)
 
@@ -149,7 +166,9 @@ class KvStreaks:
         return len(self.kv_streaks)
 
     @classmethod
-    def generate_kv_streaks_for_all_permutations(cls, n: int) -> Generator['KvStreaks', None, None]:
+    def generate_kv_streaks_for_all_permutations(
+        cls, n: int
+    ) -> Generator["KvStreaks", None, None]:
         """
         Generates KvStreaks objects for every permutation of the integers from 1 to n (inclusive).
 
@@ -163,7 +182,7 @@ class KvStreaks:
             yield cls(perm)
 
 
-class StrStats:
+class StreakStatistics:
     def __init__(self, n: int):
         self.n = n
         self.streaks_arr = self._find_streaks_arr(n)
@@ -240,7 +259,7 @@ class StrStats:
         return self._streak_length_absent()[SUMS]
 
     def __repr__(self) -> str:
-        return f"StrStats(n={self.n}, streaks_arr={self.streaks_arr})"
+        return f"StreakStatistics(n={self.n}, streaks_arr={self.streaks_arr})"
 
     def __str__(self) -> str:
         """Prints the array with arr[0] and arr[:, 0] in green using termcolor."""

@@ -3,7 +3,7 @@ from math import exp, factorial
 import numpy as np
 from sympy.functions.combinatorial.numbers import stirling
 
-from streaks2.streaks import StrStats
+from streaks2.streaks import StreakStatistics
 from streaks2.utils import create_array_from_kv
 
 
@@ -12,7 +12,7 @@ def test_streak_counts_match_stirlings():
     Test if the number of streaks of each length matches the Stirling numbers of the first kind.
     """
     for n in range(1, 10):
-        streak_counts = StrStats(n).by_count()
+        streak_counts = StreakStatistics(n).by_count()
         stirlings = np.array([stirling(n, i, kind=1) for i in range(1, n + 1)])
         assert np.array_equal(streak_counts, stirlings), (
             "Streaks do not match Stirlings"
@@ -24,7 +24,7 @@ def test_streak_lengths_match_expected():
     Test if the number of streaks of each length matches the expected values.
     """
     for n in range(1, 10):
-        streak_lengths = StrStats(n).by_length()
+        streak_lengths = StreakStatistics(n).by_length()
         nperms = factorial(n)
         expected = np.zeros(n + 1, dtype=int)
         for length in range(1, n + 1):
@@ -42,7 +42,7 @@ def test_missing_streak_lengths():
     # based on the Poisson distribution.
     for n in range(4, 10):
         # [derangements, permutations lacking transpositions, lacking 3 cycles, etc.]
-        observed = StrStats(n).missing_streak_lengths()[1:]
+        observed = StreakStatistics(n).missing_streak_lengths()[1:]
         # The expected number of missing streak lengths is given by the formula:
         # E[X] = n! * exp(-1/k) for k = 1, 2, ..., n
         poisson_p_zeros = np.exp(-1 / np.arange(1, n + 1))
@@ -63,7 +63,7 @@ def test_dist_of_singletons():
     """
     n = 7
     # TODO: Add a range of n values.
-    singletons = StrStats(n).streaks_arr[1:, 1]
+    singletons = StreakStatistics(n).streaks_arr[1:, 1]
     unique_vals, counts = np.unique(singletons, return_counts=True)
     observed = create_array_from_kv(unique_vals, counts)
     factorials = np.array([factorial(i) for i in range(0, n + 1)])
