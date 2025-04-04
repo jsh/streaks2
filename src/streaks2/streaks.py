@@ -1,3 +1,8 @@
+"""
+This module contains classes for working with streaks of integers.
+It provides functionality to represent, analyze, and generate statistics about streaks in permutations.
+"""
+
 from itertools import permutations
 from math import factorial
 from typing import Generator, List
@@ -14,12 +19,11 @@ class Streak:
     """
 
     def __init__(self, seq: List[int]):
-        """
-        Initializes a Streak object.
+        """Initializes a Streak object.
 
         Args:
-            seq (list): A list of integers representing the streak.
-                                 The first element should be the smallest.
+            seq (List[int]): A list of integers representing the streak.
+                The first element should be the smallest.
         """
         if seq:
             if min(seq) != seq[0]:
@@ -30,9 +34,7 @@ class Streak:
         return f"Streak({self.streak})"
 
     def __len__(self) -> int:
-        """
-        Returns the number of integers in the streak.
-        """
+        """Returns the number of integers in the streak."""
         return len(self.streak)
 
     def __eq__(self, other: "Streak") -> bool:
@@ -54,25 +56,23 @@ class Streaks:
     """
 
     def __init__(self, seq: List[int]):
-        """
-        Initializes a Streaks object by decomposing a sequence of integers into streaks.
+        """Initializes a Streaks object by decomposing a sequence of integers into streaks.
 
         Args:
-            seq (list): An integer sequence to decompose into streaks.
+            seq (List[int]): An integer sequence to decompose into streaks.
         """
         if len(seq) != len(set(seq)):
             raise ValueError("Sequence must contain distinct elements.")
         self.streaks = self._find_streaks(seq)
 
     def _find_streaks(self, seq: List[int]) -> List[Streak]:
-        """
-        Decomposes a list of integers into streaks.
+        """Decomposes a list of integers into streaks.
 
         Args:
-            seq (list): A sequence of distinct integers.
+            seq (List[int]): A sequence of distinct integers.
 
         Returns:
-            list: A list of Streak objects.
+            List[Streak]: A list of Streak objects.
         """
         if not seq:
             return []
@@ -94,23 +94,20 @@ class Streaks:
         return f"Streaks({self.streaks})"
 
     def __len__(self) -> int:
-        """
-        Returns the number of streaks in the Streaks object.
-        """
+        """Returns the number of streaks in the Streaks object."""
         return len(self.streaks)
 
     @classmethod
     def generate_streaks_for_all_permutations(
         cls, n: int
     ) -> Generator["Streaks", None, None]:
-        """
-        Generates Streaks objects for every permutation of the integers from 1 to n (inclusive).
+        """Generates Streaks objects for every permutation of the integers from 1 to n (inclusive).
 
         Args:
             n (int): The upper limit of the range of integers to permute.
 
         Yields:
-            Streaks: A Streaks object for each permutation.
+            Generator["Streaks", None, None]: A Streaks object for each permutation.
         """
         for perm in permutations(range(1, n + 1)):
             yield cls(perm)
@@ -122,11 +119,10 @@ class KvStreaks:
     """
 
     def __init__(self, seq: List[int]):
-        """
-        Initializes a KvStreaks object.
+        """Initializes a KvStreaks object.
 
         Args:
-            seq (list): A list of integers to analyze for streaks.
+            seq (List[int]): A list of integers to analyze for streaks.
         """
         if len(seq) != len(set(seq)):
             raise ValueError("Sequence must contain distinct elements.")
@@ -134,11 +130,10 @@ class KvStreaks:
         self._find_kv_streaks(seq)
 
     def _find_kv_streaks(self, seq: List[int]):
-        """
-        Calculates the streak lengths and stores them in the kv_streaks dictionary.
+        """Calculates the streak lengths and stores them in the kv_streaks dictionary.
 
         Args:
-            seq (list): A list of integers.
+            seq (List[int]): A list of integers.
         """
         if not seq:
             return
@@ -160,39 +155,56 @@ class KvStreaks:
         return f"KvStreaks({self.kv_streaks})"
 
     def __len__(self) -> int:
-        """
-        Returns the number of streaks in the KvStreaks object.
-        """
+        """Returns the number of streaks in the KvStreaks object."""
         return len(self.kv_streaks)
 
     @classmethod
     def generate_kv_streaks_for_all_permutations(
         cls, n: int
     ) -> Generator["KvStreaks", None, None]:
-        """
-        Generates KvStreaks objects for every permutation of the integers from 1 to n (inclusive).
+        """Generates KvStreaks objects for every permutation of the integers from 1 to n (inclusive).
 
         Args:
             n (int): The upper limit of the range of integers to permute.
 
         Yields:
-            KvStreaks: A KvStreaks object for each permutation.
+            Generator["KvStreaks", None, None]: A KvStreaks object for each permutation.
         """
         for perm in permutations(range(1, n + 1)):
             yield cls(perm)
 
 
 class StreakStatistics:
+    """Calculates and stores statistics about streaks in permutations.
+
+    This class provides methods to analyze the distribution of streak lengths and counts
+    across all permutations of a given range of integers.
+    """
+
     def __init__(self, n: int):
+        """Initializes a StreakStatistics object for permutations of integers from 1 to n.
+
+        Args:
+            n (int): The upper limit of the range of integers to permute.
+        """
         self.n = n
         self.streaks_arr = self._find_streaks_arr(n)
         self.counts = self._streak_counts()
 
     def _find_streaks_arr(self, n: int) -> np.ndarray:
+        """Calculates and summarizes streak lengths for all permutations.
+
+        Args:
+            n (int): The upper limit of the range of integers to permute.
+
+        Returns:
+            np.ndarray: A NumPy array summarizing the streak lengths.
+        """
         lengths = self._streak_lengths(n)
         return summarize_arr(lengths)
 
     def _streak_lengths(self, n: int) -> np.ndarray:
+        """Calculates the streak lengths for all permutations of integers from 1 to n."""
         length_counts = np.zeros((factorial(n) + 1, n + 1), dtype=int)
         perm_num = 0
         for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
@@ -203,6 +215,7 @@ class StreakStatistics:
         return length_counts
 
     def _streak_counts(self) -> np.ndarray:
+        """Counts the number of permutations with each streak count."""
         counts = np.zeros(self.n + 1, dtype=int)
         for i in range(1, factorial(self.n) + 1):
             counts[self.streaks_arr[i, SUMS]] += 1
@@ -212,53 +225,38 @@ class StreakStatistics:
     def by_length(self) -> np.ndarray:
         """
         Returns the number of streaks by length.
-
-        Returns:
-            list: A list of integers representing the number of streaks by length.
         """
         return self.streaks_arr[SUMS, 1:]
 
     def by_count(self) -> np.ndarray:
         """
         The number of permutations containing each streak count.
-
-        Returns:
-            list: A list of integers representing the number of streaks by count.
         """
         return self.counts[1:]
 
     def of_length(self, length: int) -> int:
         """
         Returns the number of streaks of a given length.
-
-        Args:
-            length (int): The length of the streak to count.
-
-        Returns:
-            int: The number of streaks of the given length.
         """
         return self.streaks_arr[SUMS, length]
 
     def of_count(self, count: int) -> int:
         """
         Returns the number of permutations that have the specified streak count.
-
-        Args:
-            count (int): The number of streaks in the permutation.
-
-        Returns:
-            int: The number of permutations with that many streaks.
         """
         return self.counts[count]
 
     def _streak_length_absent(self) -> np.ndarray:
+        """Inverts zeros and nonzeros in the streaks array and summarizes the result."""
         absent = invert_zeros_and_nonzeros(self.streaks_arr)
         return summarize_arr(absent)
 
     def missing_streak_lengths(self) -> int:
+        """Calculates the number of missing streak lengths."""
         return self._streak_length_absent()[SUMS]
 
     def __repr__(self) -> str:
+        """Returns a string representation of the StreakStatistics object."""
         return f"StreakStatistics(n={self.n}, streaks_arr={self.streaks_arr})"
 
     def __str__(self) -> str:
