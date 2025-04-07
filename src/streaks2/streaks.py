@@ -10,7 +10,13 @@ from typing import Generator, List
 import numpy as np
 from termcolor import colored
 
-from streaks2.utils import SUMS, invert_zeros_and_nonzeros, summarize_arr
+from streaks2.utils import (
+    SummaryIndex,
+    add_summary_row_column,
+    invert_zeros_and_nonzeros,
+)
+
+SUM = SummaryIndex.SUM.value
 
 
 class Streak:
@@ -201,7 +207,7 @@ class StreakStatistics:
             np.ndarray: A NumPy array summarizing the streak lengths.
         """
         lengths = self._streak_lengths(n)
-        return summarize_arr(lengths)
+        return add_summary_row_column(lengths)
 
     def _streak_lengths(self, n: int) -> np.ndarray:
         """Calculates the streak lengths for all permutations of integers from 1 to n."""
@@ -218,15 +224,15 @@ class StreakStatistics:
         """Counts the number of permutations with each streak count."""
         counts = np.zeros(self.n + 1, dtype=int)
         for i in range(1, factorial(self.n) + 1):
-            counts[self.streaks_arr[i, SUMS]] += 1
-        counts[SUMS] = sum(counts)
+            counts[self.streaks_arr[i, SUM]] += 1
+        counts[SUM] = sum(counts)
         return counts
 
     def by_length(self) -> np.ndarray:
         """
         Returns the number of streaks by length.
         """
-        return self.streaks_arr[SUMS, 1:]
+        return self.streaks_arr[SUM, 1:]
 
     def by_count(self) -> np.ndarray:
         """
@@ -238,7 +244,7 @@ class StreakStatistics:
         """
         Returns the number of streaks of a given length.
         """
-        return self.streaks_arr[SUMS, length]
+        return self.streaks_arr[SUM, length]
 
     def of_count(self, count: int) -> int:
         """
@@ -249,11 +255,11 @@ class StreakStatistics:
     def _streak_length_absent(self) -> np.ndarray:
         """Inverts zeros and nonzeros in the streaks array and summarizes the result."""
         absent = invert_zeros_and_nonzeros(self.streaks_arr)
-        return summarize_arr(absent)
+        return add_summary_row_column(absent)
 
     def missing_streak_lengths(self) -> int:
         """Calculates the number of missing streak lengths."""
-        return self._streak_length_absent()[SUMS]
+        return self._streak_length_absent()[SUM]
 
     def __repr__(self) -> str:
         """Returns a string representation of the StreakStatistics object."""

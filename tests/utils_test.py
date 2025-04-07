@@ -11,39 +11,41 @@ def test_random_permutation():
     assert all(i in permutation for i in range(n))
 
 
-def test_summarize_arr():
+def test_add_summary_row_column():
     arr = np.array([[0, 0, 0], [0, 1, 2], [0, 3, 4]])
     expected = np.array([[10, 4, 6], [3, 1, 2], [7, 3, 4]])
-    result = utils.summarize_arr(arr.copy())  # copy to avoid modifying original
+    result = utils.add_summary_row_column(
+        arr.copy()
+    )  # copy to avoid modifying original
     np.testing.assert_array_equal(result, expected)
 
     arr2 = np.array([[0, 0], [0, 0]])
     expected2 = np.array([[0, 0], [0, 0]])
-    result2 = utils.summarize_arr(arr2.copy())
+    result2 = utils.add_summary_row_column(arr2.copy())
     np.testing.assert_array_equal(result2, expected2)
 
     arr3 = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
     expected3 = np.array([[28, 13, 15], [11, 5, 6], [17, 8, 9]])
-    result3 = utils.summarize_arr(arr3.copy())
+    result3 = utils.add_summary_row_column(arr3.copy())
     np.testing.assert_array_equal(result3, np.array(expected3))
 
     arr4 = np.array([[1]])
     expected4 = np.array([[1]])
-    result4 = utils.summarize_arr(arr4.copy())
+    result4 = utils.add_summary_row_column(arr4.copy())
     np.testing.assert_array_equal(result4, expected4)
 
     arr5 = np.array([[1, 2], [3, 4]])
     expected5 = np.array([[4, 4], [4, 4]])
-    result5 = utils.summarize_arr(arr5.copy())
+    result5 = utils.add_summary_row_column(arr5.copy())
     np.testing.assert_array_equal(result5, expected5)
     arr6 = np.array([[1, 2, 3]])
     expected6 = np.array([[1, 2, 3]])
-    result6 = utils.summarize_arr(arr6.copy())
+    result6 = utils.add_summary_row_column(arr6.copy())
     np.testing.assert_array_equal(result6, expected6)
 
     arr7 = np.array([[1], [2], [3]])
     expected7 = np.array([[1], [2], [3]])
-    result7 = utils.summarize_arr(arr7.copy())
+    result7 = utils.add_summary_row_column(arr7.copy())
     np.testing.assert_array_equal(result7, expected7)
 
 
