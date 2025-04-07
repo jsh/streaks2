@@ -17,6 +17,38 @@ def test_streak_init_invalid():
         Streak([2, 1, 3])
 
 
+def test_streak_len():
+    """Test the __len__() method of the Streak class."""
+    streak = Streak([1, 2, 3])
+    assert len(streak) == 3
+    streak = Streak([])
+    assert len(streak) == 0
+
+
+def test_find_kv_streaks_empty_seq():
+    """Test that _find_kv_streaks handles an empty sequence."""
+    kv_streaks = KvStreaks([])
+    assert kv_streaks.kv_streaks == {}
+
+
+def test_find_streaks_empty_seq():
+    """Test that _find_streaks returns an empty list when given an empty sequence."""
+    streaks = Streaks([])
+    assert streaks._find_streaks([]) == []
+
+
+def test_streaks_repr():
+    """Test the __repr__() method of the Streaks class."""
+    streaks = Streaks([1, 2, 3, 4])
+    assert repr(streaks).startswith("Streaks([Streak([1, 2, 3, 4])")
+
+
+def test_kvstreaks_repr():
+    """Test the __repr__() method of the KvStreaks class."""
+    kvstreaks = KvStreaks([1, 2, 3, 4])
+    assert repr(kvstreaks) == "KvStreaks({1: 4})"
+
+
 def test_streaks_init_valid():
     """Test that a Streaks object is initialized correctly with a valid sequence."""
     streaks = Streaks([1, 2, 3, 4])
