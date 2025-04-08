@@ -49,6 +49,12 @@ def test_add_summary_row_column():
     np.testing.assert_array_equal(result7, expected7)
 
 
+def test_add_summary_row_column_value_error():
+    arr = np.array([1, 2, 3])
+    with pytest.raises(ValueError, match=r"^Input array must be 2-dimensional.$"):
+        utils.add_summary_row_column(arr)
+
+
 def test_invert_zeros_and_nonzeros():
     arr = np.array([[0, 1, 0], [1, 0, 1]])
     expected = np.array([[1, 0, 1], [0, 1, 0]])
@@ -64,6 +70,12 @@ def test_invert_zeros_and_nonzeros():
     expected3 = np.array([[0, 0], [0, 0]])
     result3 = utils.invert_zeros_and_nonzeros(arr3)
     np.testing.assert_array_equal(result3, expected3)
+
+
+def test_invert_zeros_and_nonzeros_value_error():
+    arr = np.array(["a", "b", "c"])
+    with pytest.raises(ValueError, match=r"^Input array must be of a numeric type.$"):
+        utils.invert_zeros_and_nonzeros(arr)
 
 
 def test_invert_zeros_and_nonzeros_dtype():
@@ -118,3 +130,17 @@ def test_create_array_from_kv_raises():
         ValueError, match=r"^keys and vals arrays must have the same size.$"
     ):
         utils.create_array_from_kv(keys, vals)
+
+    keys_multi = np.array([[0, 1], [2, 3]])
+    vals_multi = np.array([[10, 20], [30, 40]])
+    with pytest.raises(
+        ValueError, match=r"^keys and vals arrays must be 1-dimensional.$"
+    ):
+        utils.create_array_from_kv(keys_multi, vals_multi)
+
+    keys_multi2 = np.array([0, 1, 2])
+    vals_multi2 = np.array([[10, 20, 30]])
+    with pytest.raises(
+        ValueError, match=r"^keys and vals arrays must be 1-dimensional.$"
+    ):
+        utils.create_array_from_kv(keys_multi2, vals_multi2)
