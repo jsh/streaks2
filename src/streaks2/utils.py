@@ -46,6 +46,7 @@ def add_summary_row_column(arr: np.ndarray) -> np.ndarray:
     row_sums = np.sum(arr[:, 1:], axis=1)
 
     result = np.zeros_like(arr)  # Create a new array
+    result[1:, 1:] = arr[1:, 1:]
     result[0, :] = column_sums
     result[:, 0] = row_sums
 
