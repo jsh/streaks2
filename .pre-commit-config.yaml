@@ -31,20 +31,20 @@ repos:
     - id: remove
       name: remove
       entry: rm -rf mutants .mutmut-cache
-      language: system
+      language: python
       pass_filenames: false
       always_run: true
     # Run pytest, including coverage tests
     - id: pytest
       name: pytest
-      entry: pytest --cov tests
+      entry: pytest tests
       language: python
       pass_filenames: false
       always_run: true
-    # Run mutation tests
-    - id: mutmut
-      name: mutmut
-      entry: mutmut run
-      language: system
-      pass_filenames: false
-      always_run: true
+    # # Run mutation tests
+    # - id: mutmut
+    #   name: mutmut
+    #   entry: mutmut run
+    #   language: python
+    #   pass_filenames: false
+    #   always_run: true

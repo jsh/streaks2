@@ -4,14 +4,14 @@ import pytest
 from streaks2 import utils
 
 
-def test_random_permutation():
+def test_random_permutation() -> None:
     n = 5
     permutation = utils.random_permutation(n)
     assert len(permutation) == n
     assert all(i in permutation for i in range(n))
 
 
-def test_add_summary_row_column():
+def test_add_summary_row_column() -> None:
     arr = np.array([[0, 0, 0], [0, 1, 2], [0, 3, 4]])
     expected = np.array([[10, 4, 6], [3, 1, 2], [7, 3, 4]])
     result = utils.add_summary_row_column(
@@ -49,13 +49,13 @@ def test_add_summary_row_column():
     np.testing.assert_array_equal(result7, expected7)
 
 
-def test_add_summary_row_column_value_error():
+def test_add_summary_row_column_value_error() -> None:
     arr = np.array([1, 2, 3])
     with pytest.raises(ValueError, match=r"^Input array must be 2-dimensional.$"):
         utils.add_summary_row_column(arr)
 
 
-def test_invert_zeros_and_nonzeros():
+def test_invert_zeros_and_nonzeros() -> None:
     arr = np.array([[0, 1, 0], [1, 0, 1]])
     expected = np.array([[1, 0, 1], [0, 1, 0]])
     result = utils.invert_zeros_and_nonzeros(arr)
@@ -72,19 +72,19 @@ def test_invert_zeros_and_nonzeros():
     np.testing.assert_array_equal(result3, expected3)
 
 
-def test_invert_zeros_and_nonzeros_value_error():
+def test_invert_zeros_and_nonzeros_value_error() -> None:
     arr = np.array(["a", "b", "c"])
     with pytest.raises(ValueError, match=r"^Input array must be of a numeric type.$"):
         utils.invert_zeros_and_nonzeros(arr)
 
 
-def test_invert_zeros_and_nonzeros_dtype():
+def test_invert_zeros_and_nonzeros_dtype() -> None:
     arr = np.array([[0, 1, 0], [1, 0, 1]])
     result = utils.invert_zeros_and_nonzeros(arr)
     assert result.dtype == int
 
 
-def test_create_array_from_kv():
+def test_create_array_from_kv() -> None:
     keys = np.array([0, 1, 2])
     vals = np.array([10, 20, 30])
     expected = np.array([10, 20, 30])
@@ -123,7 +123,7 @@ def test_create_array_from_kv():
     assert result6.dtype == int
 
 
-def test_create_array_from_kv_raises():
+def test_create_array_from_kv_raises() -> None:
     keys = np.array([0, 1, 2])
     vals = np.array([10, 20])
     with pytest.raises(

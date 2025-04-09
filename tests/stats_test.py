@@ -7,7 +7,7 @@ from streaks2.streaks import StreakStatistics
 from streaks2.utils import create_array_from_kv
 
 
-def test_streak_counts_match_stirlings():
+def test_streak_counts_match_stirlings() -> None:
     """
     Test if the number of streaks of each length matches the Stirling numbers of the first kind.
     """
@@ -19,7 +19,7 @@ def test_streak_counts_match_stirlings():
         )
 
 
-def test_streak_lengths_match_expected():
+def test_streak_lengths_match_expected() -> None:
     """
     Test if the number of streaks of each length matches the expected values.
     """
@@ -53,7 +53,7 @@ def test_streak_lengths_match_expected():
 #         # TODO: replace with a chi-squared test.
 
 
-def test_dist_of_singletons():
+def test_dist_of_singletons() -> None:
     """
     Test the distribution of singletons across permutations.
     These should follow a Poisson distribution.
