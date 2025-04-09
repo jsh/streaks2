@@ -10,19 +10,6 @@ class SummaryIndex(Enum):
     SUM = 0  # Index for summary row and column
 
 
-# def summarize_arr(arr):
-#     assert np.all(arr[SUMS] == 0), "First row is not all zeros."
-#     assert np.all(arr[:, SUMS] == 0), "First column is not all zeros."
-#     col_sums = np.sum(arr, axis=COL_AXIS)  # Sum along columns
-#     row_sums = np.sum(arr, axis=ROW_AXIS)  # Sum along rows
-#     total = sum(col_sums)
-#     assert total == sum(row_sums.flatten())  # cross-check
-#     arr[SUMS] = col_sums
-#     arr[:, SUMS] = row_sums.flatten()
-#     arr[SUMS, SUMS] = total
-#     return arr
-
-
 def add_summary_row_column(arr: np.ndarray) -> np.ndarray:
     """Adds a summary row and column to a 2D NumPy array.
 
