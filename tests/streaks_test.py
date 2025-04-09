@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 
 from streaks2.streaks import KvStreaks, Streak, Streaks, StreakStatistics
@@ -29,6 +30,23 @@ def test_find_kv_streaks_empty_seq():
     """Test that _find_kv_streaks handles an empty sequence."""
     kv_streaks = KvStreaks([])
     assert kv_streaks.kv_streaks == {}
+
+
+def test_streak_length_absent():
+    """Test that _streak_length_absent returns the correct array."""
+    n = 3
+    stats = StreakStatistics(n)
+    absent_arr = stats._streak_length_absent()
+    assert absent_arr.shape == (7, 4)
+
+
+def test_missing_streak_lengths():
+    """Test that missing_streak_lengths returns the correct count."""
+    n = 3
+    stats = StreakStatistics(n)
+    observed = stats.missing_streak_lengths()
+    expected = np.array([9, 2, 3, 4])
+    assert np.array_equal(observed, expected)
 
 
 def test_find_streaks_empty_seq():

@@ -259,7 +259,7 @@ class StreakStatistics:
 
     def missing_streak_lengths(self) -> int:
         """Calculates the number of missing streak lengths."""
-        return self._streak_length_absent()[SUM]
+        return self._streak_length_absent()[0]
 
     def __repr__(self) -> str:
         """Returns a string representation of the StreakStatistics object."""

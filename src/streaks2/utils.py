@@ -97,7 +97,7 @@ def create_array_from_kv(keys: np.ndarray, vals: np.ndarray) -> np.ndarray:
     return arr
 
 
-def random_permutation(n):
+def random_permutation(n: int) -> np.ndarray:
     """
         Generate a random permutation of integers from 0 to n-1.
 
