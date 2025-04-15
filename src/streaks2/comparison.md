@@ -1,8 +1,8 @@
 
-##Decompositions
+## Decompositions
 
-                                                  |              | Reverse      |  Reverse   |   
-| Permutation     | Cycles        | Trends        |   Streaks    | Streaks      |  Trends    |   
+                                        
+| Permutation     | Cycles        | Trends        |   Streaks    | Reverse<br>Streaks | Reverse<br> Trends |   
 |-----------------|---------------|---------------|--------------|--------------|------------|
 |                 |               |               |              |              |            | 
 | 1 2 4           | (1)(2)(4)     | (1 2 4)       |  (1)(2)(4)   | (1 2 4)      | (1)(2)(4)  |   
@@ -12,12 +12,12 @@
 | 4 1 2           | (4 1 2)       | (4)(1 2)      |  (4 1 2)     | (4)(1 2)     | (4 1 2)    |   
 | 4 2 1           | (4 1)(2)      | (4)(2)(1)     |  (4 2 1)     | (4)(2)(1)    | (4 2 1)    |   
                                  
-==============                                                       
+***                                                       
                                                                      
-##Normalized                                                           
+## Normalized                                                           
              
-| Permutation |          |          |          | Reverse  | Reverse  |
-|             | Cycles   | Trends   | Streaks  | Trends   | Streaks  |
+
+| Permutation | Cycles   | Trends   | Streaks  | Reverse<br>Trends   | Reverse<br>Streaks  |
 |-------------|----------|----------|----------|----------|----------|
 |             |          |          |          |          |          |                                
 | 1 2 4       | (1)(2)(3)| (1 2 3)  | (1 2 3)  | (1)(2)(3)| (1)(2)(3)|
