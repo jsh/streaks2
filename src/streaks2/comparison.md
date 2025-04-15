@@ -16,8 +16,8 @@
                                                                      
 ##Normalized                                                           
              
-|             |          |          |          | Reverse  | Reverse  |
-| Permutation | Cycles   | Trends   | Streaks  | Trends   | Streaks  |
+| Permutation |          |          |          | Reverse  | Reverse  |
+|             | Cycles   | Trends   | Streaks  | Trends   | Streaks  |
 |-------------|----------|----------|----------|----------|----------|
 |             |          |          |          |          |          |                                
 | 1 2 4       | (1)(2)(3)| (1 2 3)  | (1 2 3)  | (1)(2)(3)| (1)(2)(3)|
