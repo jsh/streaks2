@@ -1,30 +1,43 @@
 # Decomposing Sequences
 
 Below, I show five decompositions of the 3! = 6 permutations of the elements {1, 2, 4}.
-I use integers because it makes the decompositions easy to write.
-I choose these integers because all subsets have different means from the set mean.
-This guarantees that the five decompositions I provide are possible, deterministic, and unique.
+I choose these particular integers because all subsets have different means from the set mean.
+This guarantees that the trend decompositions are all possible and unique.
 
 I choose integers because they're easier to write than three random reals. :-)
 
+
 ## Decompositions
 
-                                        
-| Permutation | Cycles   | Trends   | Streaks  | Reverse<br>Trends | Reverse<br>Streaks |   
+The first three well-defined decompositions are into
+
+- cycles (standard permutation cycles),
+- trends (quasi-increasing sequences), and
+- winning streaks (sequences in which the first element is the smallest)
+
+to these, I add
+
+- reverse trends (quasi-decreasing sequences), and
+- reverse streaks (sequences in which the first element is the largest)
+
+The algorithms for all are greedy and `O(N)`, though the algorithms for both trend-flavored decompositions are recursive.
+
+
+| Permutation | Cycles   | Trends   | Streaks  | Reverse<br>Trends | Reverse<br>Streaks |
 |-------------|----------|----------|----------|-------------------|--------------------|
-|             |          |          |          |                   |                    | 
-| 1 2 4       | (1)(2)(4)| (1 2 4)  | (1 2 4)  | (1)(2)(4)         | (1)(2)(4)          |   
-| 1 4 2       | (1)(2 4) | (1 4)(2) | (1 4 2)  | (1)(4 2)          | (1)(4 2)           |   
-| 2 1 4       | (1 2)(4) | (2 1 4)  | (2)(1 4) | (2 1)(4)          | (2 1)(4)           |   
-| 2 4 1       | (1 2 4)  | (2 4)(1) | (2 4)(1) | (2)(4 1)          | (2)(4 1)           |   
-| 4 1 2       | (1 4 2)  | (4)(1 2) | (4)(1 2) | (4 1 2)           | (4 1 2)            |   
-| 4 2 1       | (1 4)(2) | (4)(2)(1)| (4)(2)(1)| (4 2 1)           | (4 2 1)            |   
-                                 
-***                                                       
-                                                                     
-## Normalized                                                           
-             
-Here, I map the integers above, {1, 2, 4}, to their rank order, {1, 2, 3}, and re-write each block (cycle equivalent)
+|             |          |          |          |                   |                    |
+| 1 2 4       | (1)(2)(4)| (1 2 4)  | (1 2 4)  | (1)(2)(4)         | (1)(2)(4)          |
+| 1 4 2       | (1)(2 4) | (1 4)(2) | (1 4 2)  | (1)(4 2)          | (1)(4 2)           |
+| 2 1 4       | (1 2)(4) | (2 1 4)  | (2)(1 4) | (2 1)(4)          | (2 1)(4)           |
+| 2 4 1       | (1 2 4)  | (2 4)(1) | (2 4)(1) | (2)(4 1)          | (2)(4 1)           |
+| 4 1 2       | (1 4 2)  | (4)(1 2) | (4)(1 2) | (4 1 2)           | (4 1 2)            |
+| 4 2 1       | (1 4)(2) | (4)(2)(1)| (4)(2)(1)| (4 2 1)           | (4 2 1)            |
+
+***
+
+## Normalized
+
+Here, I map the integers above, {1, 2, 4}, to their rank orders, {1, 2, 3}, and re-write each block (cycle equivalent)
 using the standard convention for permutation cycles:
 
 - circularly permute each block until the smallest element is first
@@ -34,7 +47,7 @@ Note that the decompositions are no longer "correct" -- this is just a re-labeli
 
 | Permutation | Cycles   | Trends   | Streaks  | Reverse<br>Trends | Reverse<br>Streaks |
 |-------------|----------|----------|----------|-------------------|--------------------|
-|             |          |          |          |                   |                    |                                
+|             |          |          |          |                   |                    |
 | 1 2 3       | (1)(2)(3)| (1 2 3)  | (1 2 3)  | (1)(2)(3)         | (1)(2)(3)          |
 | 1 3 2       | (1)(2 3) | (1 3)(2) | (1 3 2)  | (1)(2 3)          | (1)(2 3)           |
 | 2 1 3       | (1 2)(3) | (1 3 2)  | (1 3)(2) | (1 2)(3)          | (1 2)(3)           |
@@ -59,7 +72,7 @@ We could, thus, add 716 more columns to the tables above, each of which correspo
 
 ## Questions
 
-- Why do reverse trends and reverse streaks produce the same decompositions? 
+- Why do reverse trends and reverse streaks produce the same decompositions?
 - Is this identity for permutations on `N` elements true for all `N`?
 - Is there some way to find the rule that produces each (any?) of the other 716 possible decompositions on 3 elements?
 - Does the method generalize to ways to find novel decompositions of sequences of `N` elements?
