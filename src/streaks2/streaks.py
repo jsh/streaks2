@@ -195,6 +195,7 @@ class StreakStatistics:
         """
         self.n = n
         self.streaks_arr = self._find_streaks_arr(n)
+        self.sl_streak_counts = self._sl_streak_counts(n)
         self.counts = self._streak_counts()
 
     def _find_streaks_arr(self, n: int) -> np.ndarray:
@@ -226,6 +227,17 @@ class StreakStatistics:
         for i in range(1, factorial(self.n) + 1):
             counts[self.streaks_arr[i, SUM]] += 1
         counts[SUM] = sum(counts)
+        return counts
+
+    def _sl_streak_counts(self, n: int) -> np.ndarray:
+        counts = np.zeros((n + 1, n + 1), dtype=int)
+        for kv_streaks in KvStreaks.generate_kv_streaks_for_all_permutations(n):
+            streaks = kv_streaks.kv_streaks
+            for start, length in streaks.items():
+                counts[start, length] += 1
+        counts[SUM] = np.sum(counts, axis=0)
+        counts[:, SUM] = np.sum(counts, axis=1)
+        counts[SUM, SUM] = np.sum(counts[1:, 1:])
         return counts
 
     def by_length(self) -> np.ndarray:
