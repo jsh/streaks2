@@ -73,7 +73,8 @@ We could, thus, add 716 more columns to the tables above, each of which correspo
 ## Questions
 
 - Why do reverse trends and reverse streaks produce the same decompositions?
-- Is this identity for permutations on `N` elements true for all `N`?
+- Does this identity, reverse trends == reverse streaks, hold for all `N`?
+- Is there some simple property that lets me immediately see that a decomposition algorithm will map 1-1 to permutation cycles?
 - Is there some way to find the rule that produces each (any?) of the other 716 possible decompositions on 3 elements?
 - Does the method generalize to ways to find novel decompositions of sequences of `N` elements?
 - Is there a general way to choose a set of `N` integers that has the property "all subset means are distinct from the set mean"?
